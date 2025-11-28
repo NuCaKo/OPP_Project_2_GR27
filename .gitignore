@@ -1,0 +1,53 @@
+### IntelliJ IDEA ###
+# IntelliJ'nin kendi ayar ve çıktı dosyaları
+out/
+!**/src/main/**/out/
+!**/src/test/**/out/
+
+# Compiled class file
+*.class
+
+# Package Files #
+*.jar
+*.war
+*.ear
+
+# IntelliJ IDEA files
+.idea/
+*.iml
+
+# Build outputs
+# out/ (Yukarıda zaten tanımlı, ancak tekrarlamakta zarar yok)
+target/
+
+# Logs
+*.log
+
+### Eclipse ###
+# Eclipse'in proje ayarları ve çıktıları
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+bin/
+!**/src/main/**/bin/
+!**/src/test/**/bin/
+
+### NetBeans ###
+# NetBeans ayarları ve çıktıları
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
+### VS Code ###
+# VS Code yerel ayarları
+.vscode/
+
+### Mac OS ###
+# Mac OS'in otomatik oluşturduğu görünüm dosyası
+.DS_Store
