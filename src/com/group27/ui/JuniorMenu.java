@@ -3,7 +3,6 @@ package com.group27.ui;
 import com.group27.dao.JuniorDAO;
 import com.group27.model.Contact;
 import com.group27.model.User;
-
 import java.sql.Date;
 
 public class JuniorMenu extends TesterMenu {
@@ -26,7 +25,7 @@ public class JuniorMenu extends TesterMenu {
             System.out.println("4. Custom Search");
             System.out.println("5. Sort Contacts");
             System.out.println("6. Change Password");
-            System.out.println("7. UPDATE Contact"); // Junior Feature
+            System.out.println("7. UPDATE Contact"); //
             printFooter();
 
             String choice = scanner.nextLine();
@@ -40,7 +39,7 @@ public class JuniorMenu extends TesterMenu {
             else if (choice.equals("0")) {
                 running = false;
             } else {
-                System.out.println("Invalid selection! Please enter 0-7.");
+                System.out.println("❌ Invalid selection! Please enter 0-7.");
             }
         }
     }
@@ -48,7 +47,8 @@ public class JuniorMenu extends TesterMenu {
     private void performUpdate() {
         System.out.println("\n--- UPDATE CONTACT ---");
 
-        int id = readValidInt("Enter Contact ID to update: ");
+
+        int id = input.readValidInt("Enter Contact ID to update: ");
 
         Contact c = juniorDAO.getContactById(id);
         if (c == null) {
@@ -60,44 +60,37 @@ public class JuniorMenu extends TesterMenu {
         System.out.println("ℹ️ Tip: Press ENTER to keep the current value.");
 
 
-        String newName = readName("First Name (" + c.getFirstName() + ")", false);
-        if (!newName.isEmpty()) {
-            c.setFirstName(newName);
-        }
+        String newName = input.readName("First Name (" + c.getFirstName() + ")", false);
+        if (!newName.isEmpty()) c.setFirstName(newName);
 
 
-        String newLast = readName("Last Name (" + c.getLastName() + ")", false);
-        if (!newLast.isEmpty()) {
-            c.setLastName(newLast);
-        }
-
-        String newPhone = readPhone("Phone (" + c.getPhonePrimary() + ")", false);
-        if (!newPhone.isEmpty()) {
-            c.setPhonePrimary(newPhone);
-        }
+        String newLast = input.readName("Last Name (" + c.getLastName() + ")", false);
+        if (!newLast.isEmpty()) c.setLastName(newLast);
 
 
-        String newEmail = readEmail("Email (" + c.getEmail() + ")", false);
-        if (!newEmail.isEmpty()) {
-            c.setEmail(newEmail);
-        }
+        String newPhone = input.readPhone("Phone (" + c.getPhonePrimary() + ")", false);
+        if (!newPhone.isEmpty()) c.setPhonePrimary(newPhone);
 
 
-        Date newDate = readDate("Birth Date (" + c.getBirthDate() + ")", false);
-        if (newDate != null) {
-            c.setBirthDate(newDate);
-        }
+        String currentEmail = (c.getEmail() == null) ? "-" : c.getEmail();
+        String newEmail = input.readEmail("Email (" + currentEmail + ")", false);
+        if (!newEmail.isEmpty()) c.setEmail(newEmail);
 
 
-        String newNick = getValidatedInput("Nickname (" + c.getSafeNickname() + "): ", null, null, true);
-        if (!newNick.isEmpty()) {
-            c.setNickname(newNick);
-        }
+        String currentDate = (c.getBirthDate() == null) ? "-" : c.getBirthDate().toString();
+        Date newDate = input.readDate("Birth Date (" + currentDate + ")", false);
+        if (newDate != null) c.setBirthDate(newDate);
 
-        String newLink = getValidatedInput("LinkedIn (" + c.getSafeLinkedin() + "): ", null, null, true);
-        if (!newLink.isEmpty()) {
-            c.setLinkedinUrl(newLink);
-        }
+
+        System.out.print("Nickname (" + c.getSafeNickname() + "): ");
+        String newNick = scanner.nextLine().trim();
+        if (!newNick.isEmpty()) c.setNickname(newNick);
+
+
+        System.out.print("LinkedIn (" + c.getSafeLinkedin() + "): ");
+        String newLink = scanner.nextLine().trim();
+        if (!newLink.isEmpty()) c.setLinkedinUrl(newLink);
+
 
         System.out.println(">> Updating database...");
         if (juniorDAO.updateContact(c)) {
