@@ -7,17 +7,14 @@ public class MenuSelector {
 
     public static Menu getMenu(User user) {
 
-        /*
-        if (user.getRole() == Role.MANAGER) {
-            return new ManagerMenu(user);
-        } else if (user.getRole() == Role.SENIOR_DEV) {
-            return new SeniorDevMenu(user);
-        } else if (user.getRole() == Role.JUNIOR_DEV) {
-            return new JuniorDevMenu(user);
-        }
-        */
+        // Kullanıcının rolüne göre doğru menü nesnesini döndür
 
-    //sadece tester dönüyor menüleri ekledikçe güncellemeniz lazım
-        return new TesterMenu(user);
+      if (user.getRole() == Role.JUNIOR_DEV) {
+            return new JuniorMenu(user); // Dosya adı JuniorMenu.java olduğu için
+        }
+        else {
+            // TESTER veya tanımlanmamış roller için
+            return new TesterMenu(user);
+        }
     }
 }

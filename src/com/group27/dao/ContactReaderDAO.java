@@ -93,4 +93,27 @@ public class ContactReaderDAO extends BaseDAO {
             ResultSet rs = stmt.executeQuery(); return mapResultSetToContacts(rs);
         } catch (SQLException e) { e.printStackTrace(); return new ArrayList<>(); }
     }
+
+    public Contact getContactById(int id) {
+        String sql = "SELECT * FROM contacts WHERE contact_id = ?";
+
+        try (Connection conn = DatabaseHelper.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, id);
+            ResultSet rs = stmt.executeQuery();
+
+            // BaseDAO'daki yardımcı metodu kullanarak listeye çevir
+            List<Contact> results = mapResultSetToContacts(rs);
+
+            // Eğer liste boş değilse ilk elemanı döndür, yoksa null dön
+            if (!results.isEmpty()) {
+                return results.get(0);
+            }
+
+        } catch (SQLException e) {
+            System.out.println("❌ Error fetching contact by ID: " + e.getMessage());
+        }
+        return null; // Bulunamazsa null döner
+    }
 }
