@@ -3,7 +3,7 @@ package com.group27.ui;
 import com.group27.dao.UserDAO;
 import com.group27.model.Contact;
 import com.group27.model.User;
-import com.group27.util.InputHelper; // Yeni sınıfı import ettik
+import com.group27.util.InputHelper;
 import com.group27.util.PasswordUtil;
 
 import java.util.List;
@@ -20,7 +20,7 @@ public abstract class BaseMenu implements Menu {
         this.user = user;
         this.scanner = new Scanner(System.in);
         this.userDAO = new UserDAO();
-        this.input = new InputHelper(this.scanner); // InputHelper'ı başlatıyoruz
+        this.input = new InputHelper(this.scanner);
     }
 
 

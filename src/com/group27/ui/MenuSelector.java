@@ -9,9 +9,13 @@ public class MenuSelector {
 
         // Kullanıcının rolüne göre doğru menü nesnesini döndür
 
-      if (user.getRole() == Role.JUNIOR_DEV) {
-            return new JuniorMenu(user); // Dosya adı JuniorMenu.java olduğu için
+        if (user.getRole() == Role.SENIOR_DEV) {
+            return new SeniorMenu(user);
         }
+      else if (user.getRole() == Role.JUNIOR_DEV) {
+                return new JuniorMenu(user);
+            }
+
         else {
             // TESTER veya tanımlanmamış roller için
             return new TesterMenu(user);

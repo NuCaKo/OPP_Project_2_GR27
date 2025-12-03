@@ -103,10 +103,8 @@ public class ContactReaderDAO extends BaseDAO {
             stmt.setInt(1, id);
             ResultSet rs = stmt.executeQuery();
 
-            // BaseDAO'daki yardımcı metodu kullanarak listeye çevir
             List<Contact> results = mapResultSetToContacts(rs);
 
-            // Eğer liste boş değilse ilk elemanı döndür, yoksa null dön
             if (!results.isEmpty()) {
                 return results.get(0);
             }

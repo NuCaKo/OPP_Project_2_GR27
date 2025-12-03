@@ -45,18 +45,11 @@ public class User {
     public void setCreatedAt(Timestamp createdAt) { this.createdAt = createdAt; }
 
 
-    /**
-     * UI ekranlarında "Ad Soyad" şeklinde bütünleşik isim gösterir.
-     * Örn: "Ahmet Yılmaz"
-     */
     public String getFullName() {
         return firstName + " " + lastName;
     }
 
-    /**
-     * Hata ayıklarken (System.out.println(user)) nesnenin içini okumanı sağlar.
-     * Güvenlik gereği şifreyi yazdırmıyoruz!
-     */
+
     @Override
     public String toString() {
         return "User{" +
