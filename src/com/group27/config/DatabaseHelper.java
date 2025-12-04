@@ -7,8 +7,8 @@ import java.sql.SQLException;
 public class DatabaseHelper {
 
     private static final String URL = "jdbc:mysql://localhost:3306/contact_mgmt_db?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true";
-    private static final String USER = "myuser";
-    private static final String PASSWORD = "1234";
+    private static final String USER = "root";
+    private static final String PASSWORD = "pass1234";
 
     private static Connection connection;
 
