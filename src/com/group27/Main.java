@@ -4,11 +4,16 @@ import com.group27.model.User;
 import com.group27.service.AuthService;
 import com.group27.ui.Menu;
 import com.group27.ui.MenuSelector;
+import com.group27.ui.Animation;
+
 
 import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
+
+        Animation.showStartupAnimation();
+
         Scanner scanner = new Scanner(System.in);
         AuthService authService = new AuthService();
 
@@ -30,10 +35,11 @@ public class Main {
                 menu.show();
             }
 
-            System.out.print("Programdan çıkılsın mı? (e/h): ");
+            System.out.print("Programdan çıkılsın mı? (y/n): ");
             String exit = scanner.nextLine();
-            if (exit.equalsIgnoreCase("e")) {
-                System.out.println("Güle güle!");
+            if (exit.equalsIgnoreCase("y")) {
+                Animation.showShutdownAnimation();
+                System.out.println("Goodbye!");
                 break;
             }
         }
