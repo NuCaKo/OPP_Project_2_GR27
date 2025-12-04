@@ -59,8 +59,7 @@ public class ManagerMenu extends SeniorMenu {
         System.out.print("Soyisim: ");
         String last = scanner.nextLine();
 
-        System.out.print("Rol (TESTER/JUNIOR_DEV/SENIOR_DEV/MANAGER): ");
-        Role role = Role.valueOf(scanner.nextLine().trim().toUpperCase());
+        Role role = readRole("Rol");
 
         User u = new User();
         u.setUsername(username);
@@ -145,8 +144,7 @@ public class ManagerMenu extends SeniorMenu {
         System.out.print("Yeni soyisim: ");
         String last = scanner.nextLine();
 
-        System.out.print("Yeni rol (TESTER/JUNIOR_DEV/SENIOR_DEV/MANAGER): ");
-        Role role = Role.valueOf(scanner.nextLine().trim().toUpperCase());
+        Role role = readRole("Yeni rol");
 
         User u = new User();
         u.setUserId(id);
@@ -169,6 +167,22 @@ public class ManagerMenu extends SeniorMenu {
                 System.out.println("İşlem geri alındı (eski bilgiler geri yüklendi).");
             } else {
                 System.out.println("Geri alma yapılamadı.");
+            }
+        }
+    }
+
+    private Role readRole(String prompt) {
+        while (true) {
+            System.out.print(prompt + " (TESTER/JUNIOR_DEV/SENIOR_DEV/MANAGER): ");
+            String inputVal = scanner.nextLine().trim().toUpperCase();
+            if (inputVal.isEmpty()) {
+                System.out.println("Rol boş olamaz.");
+                continue;
+            }
+            try {
+                return Role.valueOf(inputVal);
+            } catch (IllegalArgumentException e) {
+                System.out.println("Hatalı rol! Lütfen belirtilen rollerden birini giriniz.");
             }
         }
     }
