@@ -2,6 +2,7 @@ package com.group27;
 
 import com.group27.model.User;
 import com.group27.service.AuthService;
+import com.group27.ui.LoadingScreen;
 import com.group27.ui.Menu;
 import com.group27.ui.MenuSelector;
 import com.group27.ui.Animation;
@@ -14,6 +15,7 @@ public class Main {
     public static void main(String[] args) {
 
         //Animation.showStartupAnimation();
+        LoadingScreen.show();
 
         Scanner scanner = new Scanner(System.in);
         AuthService authService = new AuthService();
