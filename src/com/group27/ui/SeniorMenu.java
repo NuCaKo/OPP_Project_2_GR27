@@ -56,7 +56,7 @@ public class SeniorMenu extends JuniorMenu {
         }
     }
 
-    private void performAdd() {
+        protected void performAdd() {
         System.out.println("\n--- ADD NEW CONTACT ---");
 
         Contact c = new Contact();
@@ -85,7 +85,7 @@ public class SeniorMenu extends JuniorMenu {
         }
     }
 
-    private void performDelete() {
+        protected void performDelete() {
         System.out.println("\n--- DELETE CONTACT ---");
 
         int id = input.readValidInt("Enter Contact ID to delete: ");

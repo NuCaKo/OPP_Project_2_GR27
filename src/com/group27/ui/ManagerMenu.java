@@ -3,6 +3,7 @@ package com.group27.ui;
 import com.group27.dao.ManagerDAO;
 import com.group27.model.Role;
 import com.group27.model.User;
+import com.group27.util.InputHelper;
 
 import java.util.List;
 
@@ -22,43 +23,66 @@ public class ManagerMenu extends SeniorMenu {
             System.out.println("2) Kullanıcı sil");
             System.out.println("3) Kullanıcı güncelle");
             System.out.println("4) Kullanıcıları listele");
-            System.out.println("5) Senior (contact) menüsüne geç");
+
+            System.out.println("--- Senior Yetkileri ---");
+            System.out.println("5) Tüm contactları listele");
+            System.out.println("6) Tek alanlı arama");
+            System.out.println("7) Çok alanlı arama");
+            System.out.println("8) Custom arama");
+            System.out.println("9) Contact sıralama");
+            System.out.println("10) Contact güncelle");
+            System.out.println("11) Contact ekle");
+            System.out.println("12) Contact sil");
+
             System.out.println("0) Çıkış");
             System.out.print("Seçim: ");
 
             String sec = scanner.nextLine();
 
             switch (sec) {
+
+                // ---------------- USER CRUD ----------------
                 case "1" -> addUserFlow();
                 case "2" -> deleteUserFlow();
                 case "3" -> updateUserFlow();
                 case "4" -> listUsersFlow();
-                case "5" -> super.show();
+
+                // ---------------- SENIOR CONTACT OPS ---------------
+                case "5" -> super.handleTesterOperations("1");
+                case "6" -> super.handleTesterOperations("2");
+                case "7" -> super.handleTesterOperations("3");
+                case "8" -> super.handleTesterOperations("4");
+                case "9" -> super.handleTesterOperations("5");
+                case "10" -> super.performUpdate();
+                case "11" -> super.performAdd();
+                case "12" -> super.performDelete();
+
                 case "0" -> { return; }
+
                 default -> System.out.println("Hatalı seçim!");
             }
         }
     }
 
+    // -------------------------------------------------------
+    //                USER CRUD FUNCTIONS
+    // -------------------------------------------------------
+
     private void addUserFlow() {
-        System.out.print("Yeni kullanıcı eklemek istiyor musunuz? (E/H): ");
-        if (!scanner.nextLine().trim().equalsIgnoreCase("E")) {
-            System.out.println("İşlem iptal edildi.");
-            return;
-        }
+        System.out.println("\n--- YENİ KULLANICI EKLE ---");
 
-        System.out.print("Kullanıcı adı: ");
-        String username = scanner.nextLine();
+        String username = input.readNickname("Kullanıcı Adı", true);
 
-        System.out.print("Şifre (hashlenecek değer): ");
-        String password = scanner.nextLine();
+        System.out.print("Şifre (hashlenecek değer) ");
 
-        System.out.print("İsim: ");
-        String first = scanner.nextLine();
+        String password = input.readPassword("");
 
-        System.out.print("Soyisim: ");
-        String last = scanner.nextLine();
 
+        String first = input.readName("İsim", true);
+        String last = input.readName("Soyisim", true);
+
+
+        //switch case e çevirilecek
         System.out.print("Rol (TESTER/JUNIOR_DEV/SENIOR_DEV/MANAGER): ");
         Role role = Role.valueOf(scanner.nextLine().trim().toUpperCase());
 
@@ -69,113 +93,60 @@ public class ManagerMenu extends SeniorMenu {
         u.setLastName(last);
         u.setRole(role);
 
-        if (managerDAO.addUser(u)) {
-            System.out.println("Kullanıcı eklendi.");
-        } else {
+        if (managerDAO.addUser(u))
+            System.out.println("Kullanıcı başarıyla eklendi.");
+        else
             System.out.println("Kullanıcı eklenemedi.");
-            return;
-        }
-
-        System.out.print("İşlemi geri almak ister misiniz? (E/H): ");
-        if (scanner.nextLine().trim().equalsIgnoreCase("E")) {
-            User added = managerDAO.getUserByUsername(username);
-            if (added != null && managerDAO.deleteUser(added.getUserId())) {
-                System.out.println("İşlem geri alındı (eklenen kullanıcı silindi).");
-            } else {
-                System.out.println("Geri alma yapılamadı.");
-            }
-        }
     }
 
     private void deleteUserFlow() {
-        System.out.print("Kullanıcı silmek istiyor musunuz? (E/H): ");
-        if (!scanner.nextLine().trim().equalsIgnoreCase("E")) {
-            System.out.println("İşlem iptal edildi.");
-            return;
-        }
+        System.out.println("\n--- KULLANICI SİL ---");
+        int id = input.readValidInt("Silinecek Kullanıcı ID");
 
-        System.out.print("Silinecek kullanıcı ID: ");
-        int id = Integer.parseInt(scanner.nextLine());
-
-        User oldUser = managerDAO.getUserById(id);
-        if (oldUser == null) {
-            System.out.println("Bu ID'ye sahip kullanıcı bulunamadı.");
-            return;
-        }
-
-        if (managerDAO.deleteUser(id)) {
+        if (managerDAO.deleteUser(id))
             System.out.println("Kullanıcı silindi.");
-        } else {
-            System.out.println("Kullanıcı silinemedi.");
-            return;
-        }
-
-        System.out.print("İşlemi geri almak ister misiniz? (E/H): ");
-        if (scanner.nextLine().trim().equalsIgnoreCase("E")) {
-            if (managerDAO.addUser(oldUser)) {
-                System.out.println("İşlem geri alındı (kullanıcı yeniden eklendi, ID farklı olabilir).");
-            } else {
-                System.out.println("Geri alma yapılamadı.");
-            }
-        }
+        else
+            System.out.println("Silme işlemi başarısız.");
     }
 
     private void updateUserFlow() {
-        System.out.print("Kullanıcı güncellemek istiyor musunuz? (E/H): ");
-        if (!scanner.nextLine().trim().equalsIgnoreCase("E")) {
-            System.out.println("İşlem iptal edildi.");
+        System.out.println("\n--- KULLANICI GÜNCELLE ---");
+
+        int id = input.readValidInt("Güncellenecek Kullanıcı ID");
+
+        User old = managerDAO.getUserById(id);
+        if (old == null) {
+            System.out.println("Kullanıcı bulunamadı.");
             return;
         }
 
-        System.out.print("Güncellenecek kullanıcı ID: ");
-        int id = Integer.parseInt(scanner.nextLine());
+        System.out.print("Yeni Kullanıcı Adı ");
+        String username = input.readNickname("", true);
 
-        User oldUser = managerDAO.getUserById(id);
-        if (oldUser == null) {
-            System.out.println("Bu ID'ye sahip kullanıcı bulunamadı.");
-            return;
-        }
 
-        System.out.print("Yeni kullanıcı adı: ");
-        String username = scanner.nextLine();
+        String first = input.readName("Yeni İsim", true);
+        String last = input.readName("Yeni Soyisim", true);
 
-        System.out.print("Yeni isim: ");
-        String first = scanner.nextLine();
 
-        System.out.print("Yeni soyisim: ");
-        String last = scanner.nextLine();
-
-        System.out.print("Yeni rol (TESTER/JUNIOR_DEV/SENIOR_DEV/MANAGER): ");
+        //swithc case e çevirilecek
+        System.out.print("Yeni Rol: ");
         Role role = Role.valueOf(scanner.nextLine().trim().toUpperCase());
 
-        User u = new User();
-        u.setUserId(id);
-        u.setUsername(username);
-        u.setFirstName(first);
-        u.setLastName(last);
-        u.setRole(role);
-        u.setPasswordHash(oldUser.getPasswordHash()); // şifreyi koru
+        old.setUsername(username);
+        old.setFirstName(first);
+        old.setLastName(last);
+        old.setRole(role);
 
-        if (managerDAO.updateUser(u)) {
+        if (managerDAO.updateUser(old))
             System.out.println("Kullanıcı güncellendi.");
-        } else {
+        else
             System.out.println("Kullanıcı güncellenemedi.");
-            return;
-        }
-
-        System.out.print("İşlemi geri almak ister misiniz? (E/H): ");
-        if (scanner.nextLine().trim().equalsIgnoreCase("E")) {
-            if (managerDAO.updateUser(oldUser)) {
-                System.out.println("İşlem geri alındı (eski bilgiler geri yüklendi).");
-            } else {
-                System.out.println("Geri alma yapılamadı.");
-            }
-        }
     }
 
     private void listUsersFlow() {
+        System.out.println("\n--- TÜM KULLANICILAR ---");
+
         List<User> users = managerDAO.getAllUsers();
-        System.out.println("Connection established successfully.");
         for (User u : users) {
             System.out.println(
                     u.getUserId() + " | " +

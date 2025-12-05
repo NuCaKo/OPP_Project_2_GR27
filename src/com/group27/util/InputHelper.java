@@ -159,4 +159,27 @@ public class InputHelper {
         );
     }
 
+    public String readNickname(String label, boolean isRequired) {
+        while (true) {
+            System.out.print(label + ": ");
+            String input = scanner.nextLine().trim();
+
+            // Boş bırakılabilir
+            if (input.isEmpty()) {
+                if (!isRequired) return "";
+                System.out.println(" ERROR: Nickname is required!");
+                continue;
+            }
+
+            // Boşluk içeremez
+            if (input.contains(" ")) {
+                System.out.println(" ERROR: Nickname cannot contain spaces!");
+                continue;
+            }
+
+            return input;
+        }
+    }
+
+
 }
