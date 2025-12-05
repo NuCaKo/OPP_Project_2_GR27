@@ -5,10 +5,20 @@ import com.group27.model.Contact;
 import java.sql.*;
 
 public class JuniorDAO extends ContactReaderDAO {
-    
-    public boolean updateContact(Contact contact) {
-        String sql = "UPDATE contacts SET first_name=?, last_name=?, nickname=?, phone_primary=?, email=?, linkedin_url=?, birth_date=?, updated_at=CURRENT_TIMESTAMP WHERE contact_id=?";
 
+    public boolean updateContact(Contact contact) {
+
+        if (isDataTaken("email", contact.getEmail(), contact.getContactId())) {
+            System.out.println("ERROR: This Email is already used by another contact!");
+            return false;
+        }
+
+        if (isDataTaken("phone_primary", contact.getPhonePrimary(), contact.getContactId())) {
+            System.out.println("ERROR: This Phone Number is already used by another contact!");
+            return false;
+        }
+
+        String sql = "UPDATE contacts SET first_name=?, last_name=?, nickname=?, phone_primary=?, email=?, linkedin_url=?, birth_date=?, updated_at=CURRENT_TIMESTAMP WHERE contact_id=?";
         try (Connection conn = DatabaseHelper.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
@@ -19,13 +29,11 @@ public class JuniorDAO extends ContactReaderDAO {
             stmt.setString(5, contact.getEmail());
             stmt.setString(6, contact.getLinkedinUrl());
             stmt.setDate(7, contact.getBirthDate());
-            stmt.setInt(8, contact.getContactId()); // ID en sonda
+            stmt.setInt(8, contact.getContactId());
 
-            int affectedRows = stmt.executeUpdate();
-            return affectedRows > 0; // Güncelleme başarılıysa true döner
-
+            return stmt.executeUpdate() > 0;
         } catch (SQLException e) {
-            System.err.println("❌ Database Error: " + e.getMessage());
+            e.printStackTrace();
             return false;
         }
     }

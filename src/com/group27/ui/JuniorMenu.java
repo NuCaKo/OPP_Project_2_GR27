@@ -44,6 +44,7 @@ public class JuniorMenu extends TesterMenu {
         }
     }
 
+
     protected void performUpdate() {
         System.out.println("\n--- UPDATE CONTACT ---");
 

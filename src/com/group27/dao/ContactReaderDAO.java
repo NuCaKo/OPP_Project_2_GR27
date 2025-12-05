@@ -133,4 +133,24 @@ public class ContactReaderDAO extends BaseDAO {
         }
         return null;
     }
+
+
+    public boolean isDataTaken(String columnName, String value, int excludeId) {
+        String sql = "SELECT COUNT(*) FROM contacts WHERE " + columnName + " = ? AND contact_id != ? AND is_deleted = 0";
+
+        try (Connection conn = DatabaseHelper.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, value);
+            stmt.setInt(2, excludeId);
+
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1) > 0; // Eğer 0'dan büyükse, kayıt var demektir.
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 }

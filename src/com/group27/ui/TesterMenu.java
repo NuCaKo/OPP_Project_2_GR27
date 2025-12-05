@@ -128,18 +128,14 @@ public class TesterMenu extends BaseMenu {
         int choice = input.readInt("Select Option", 1, 2);
 
         if (choice == 1) {
-
             String domain = input.readRequiredString("Enter Domain Keyword");
             printContactList(contactDAO.searchByEmailDomain(domain));
 
         } else if (choice == 2) {
+            int min = input.readInt("Min Age", 18, 100);
+            int max = input.readInt("Max Age", 18, 100);
 
-            int min = input.readValidInt("Min Age: ");
-            int max = input.readValidInt("Max Age: ");
-
-            if (min < 0 || max < 0) {
-                System.out.println("Error: Age cannot be negative.");
-            } else if (min > max) {
+            if (min > max) {
                 System.out.println("Error: Min age cannot be greater than Max age.");
             } else {
                 printContactList(contactDAO.searchByAgeRange(min, max));

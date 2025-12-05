@@ -6,7 +6,18 @@ import java.sql.*;
 
 public class SeniorDAO extends JuniorDAO {
 
+
     public boolean addContact(Contact contact) {
+        if (isDataTaken("email", contact.getEmail(), -1)) {
+            System.out.println("ERROR: A contact with this Email already exists!");
+            return false;
+        }
+
+        if (isDataTaken("phone_primary", contact.getPhonePrimary(), -1)) {
+            System.out.println("ERROR: A contact with this Phone Number already exists!");
+            return false;
+        }
+
         String sql = "INSERT INTO contacts (first_name, last_name, phone_primary, email, birth_date, nickname, linkedin_url, created_at) " +
                 "VALUES (?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP)";
 
