@@ -294,8 +294,8 @@ public class LoadingScreen {
         // Gradient: Red -> RedBold -> Yellow (Fire gradient)
         String barColor;
         if (progress < 0.3) barColor = RED;
-        else if (progress < 0.7) barColor = RED_BOLD;
-        else if (progress < 0.8) barColor = YELLOW_BOLD;
+        else if (progress < 0.5) barColor = RED_BOLD;
+        else if (progress < 0.7) barColor = YELLOW_BOLD;
         else barColor = GREEN_BOLD;
 
         progSb.append(barColor);
