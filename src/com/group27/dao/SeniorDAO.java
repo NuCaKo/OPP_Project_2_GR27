@@ -45,4 +45,19 @@ public class SeniorDAO extends JuniorDAO {
             return false;
         }
     }
+
+    public boolean restoreContact(int contactId) {
+        String sql = "UPDATE contacts SET is_deleted = 0 WHERE contact_id = ?";
+
+        try (Connection conn = DatabaseHelper.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, contactId);
+            return stmt.executeUpdate() > 0;
+
+        } catch (SQLException e) {
+            System.err.println("Database Error (Restore): " + e.getMessage());
+            return false;
+        }
+    }
 }

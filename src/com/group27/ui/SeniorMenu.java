@@ -56,6 +56,8 @@ public class SeniorMenu extends JuniorMenu {
         }
     }
 
+
+
         protected void performAdd() {
         System.out.println("\n--- ADD NEW CONTACT ---");
 
@@ -85,10 +87,13 @@ public class SeniorMenu extends JuniorMenu {
         }
     }
 
-        protected void performDelete() {
+
+    protected void performDelete() {
         System.out.println("\n--- DELETE CONTACT ---");
 
+
         int id = input.readValidInt("Enter Contact ID to delete: ");
+
 
         Contact c = seniorDAO.getContactById(id);
         if (c == null) {
@@ -97,12 +102,42 @@ public class SeniorMenu extends JuniorMenu {
         }
 
         System.out.println("Warning: You are about to delete: " + c.getFullName());
-        System.out.print("Are you sure? (y/n): ");
-        String confirm = scanner.nextLine().trim();
 
-        if (confirm.equalsIgnoreCase("y")) {
+        String confirm = "";
+        while (true) {
+            System.out.print("Are you sure? (y/n): ");
+            confirm = scanner.nextLine().trim().toLowerCase();
+            if (confirm.equals("y") || confirm.equals("n")) {
+                break;
+            }
+            System.out.println("Error: Please enter 'y' or 'n'.");
+        }
+
+        if (confirm.equals("y")) {
+
             if (seniorDAO.deleteContact(id)) {
                 System.out.println("Success: Contact deleted.");
+
+                String undo = "";
+                while (true) {
+                    System.out.print("Mistake? Undo immediately? (y/n): ");
+                    undo = scanner.nextLine().trim().toLowerCase();
+                    if (undo.equals("y") || undo.equals("n")) {
+                        break;
+                    }
+                    System.out.println("Error: Please enter 'y' or 'n'.");
+                }
+
+                if (undo.equals("y")) {
+                    if (seniorDAO.restoreContact(id)) {
+                        System.out.println("Success: Contact restored!");
+                    } else {
+                        System.out.println("Error: Restore failed.");
+                    }
+                } else {
+                    System.out.println("Deletion finalized.");
+                }
+
             } else {
                 System.out.println("Failure: Could not delete contact.");
             }

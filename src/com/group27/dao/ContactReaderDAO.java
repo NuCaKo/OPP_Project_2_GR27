@@ -8,8 +8,10 @@ import java.util.List;
 
 public class ContactReaderDAO extends BaseDAO {
 
+
     public List<Contact> getAllContacts() {
-        String sql = "SELECT * FROM contacts";
+
+        String sql = "SELECT * FROM contacts WHERE is_deleted = 0";
         try (Connection conn = DatabaseHelper.getConnection();
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
@@ -19,12 +21,16 @@ public class ContactReaderDAO extends BaseDAO {
         }
     }
 
+
     public List<Contact> searchContacts(String fieldName, String keyword) {
         if (!isValidColumn(fieldName)) return new ArrayList<>();
-        String sql = "SELECT * FROM contacts WHERE " + fieldName + " LIKE ?";
+
+
+        String sql = "SELECT * FROM contacts WHERE is_deleted = 0 AND " + fieldName + " LIKE ?";
 
         if (fieldName.equals("phone_primary")) {
-            sql = "SELECT * FROM contacts WHERE REPLACE(phone_primary, '-', '') LIKE ?";
+
+            sql = "SELECT * FROM contacts WHERE is_deleted = 0 AND REPLACE(phone_primary, '-', '') LIKE ?";
             keyword = keyword.replace("-", "").replace(" ", "");
         }
 
@@ -38,9 +44,12 @@ public class ContactReaderDAO extends BaseDAO {
         }
     }
 
+
     public List<Contact> searchComplex(String firstName, String lastName, String phone, String email,
                                        String birthMonth, String birthYear, String nickname, String linkedinKeyword) {
-        StringBuilder sql = new StringBuilder("SELECT * FROM contacts WHERE 1=1 ");
+
+
+        StringBuilder sql = new StringBuilder("SELECT * FROM contacts WHERE is_deleted = 0 ");
         List<Object> params = new ArrayList<>();
 
         if (firstName != null && !firstName.isEmpty()) { sql.append("AND first_name LIKE ? "); params.add("%" + firstName + "%"); }
@@ -65,10 +74,14 @@ public class ContactReaderDAO extends BaseDAO {
         }
     }
 
+
     public List<Contact> getContactsSorted(String orderByField, boolean isAscending) {
         if (!isValidColumn(orderByField)) return new ArrayList<>();
         String direction = isAscending ? "ASC" : "DESC";
-        String sql = "SELECT * FROM contacts ORDER BY " + orderByField + " " + direction;
+
+
+        String sql = "SELECT * FROM contacts WHERE is_deleted = 0 ORDER BY " + orderByField + " " + direction;
+
         try (Connection conn = DatabaseHelper.getConnection();
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
@@ -78,24 +91,30 @@ public class ContactReaderDAO extends BaseDAO {
         }
     }
 
+
     public List<Contact> searchByEmailDomain(String domain) {
-        String sql = "SELECT * FROM contacts WHERE email LIKE ?";
+
+        String sql = "SELECT * FROM contacts WHERE is_deleted = 0 AND email LIKE ?";
         try (Connection conn = DatabaseHelper.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, "%@" + domain + "%");
             ResultSet rs = stmt.executeQuery(); return mapResultSetToContacts(rs);
         } catch (SQLException e) { e.printStackTrace(); return new ArrayList<>(); }
     }
 
+
     public List<Contact> searchByAgeRange(int min, int max) {
-        String sql = "SELECT * FROM contacts WHERE TIMESTAMPDIFF(YEAR, birth_date, CURDATE()) BETWEEN ? AND ?";
+
+        String sql = "SELECT * FROM contacts WHERE is_deleted = 0 AND TIMESTAMPDIFF(YEAR, birth_date, CURDATE()) BETWEEN ? AND ?";
         try (Connection conn = DatabaseHelper.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, min); stmt.setInt(2, max);
             ResultSet rs = stmt.executeQuery(); return mapResultSetToContacts(rs);
         } catch (SQLException e) { e.printStackTrace(); return new ArrayList<>(); }
     }
 
+
     public Contact getContactById(int id) {
-        String sql = "SELECT * FROM contacts WHERE contact_id = ?";
+
+        String sql = "SELECT * FROM contacts WHERE contact_id = ? AND is_deleted = 0";
 
         try (Connection conn = DatabaseHelper.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -112,6 +131,6 @@ public class ContactReaderDAO extends BaseDAO {
         } catch (SQLException e) {
             System.out.println("❌ Error fetching contact by ID: " + e.getMessage());
         }
-        return null; // Bulunamazsa null döner
+        return null;
     }
 }
