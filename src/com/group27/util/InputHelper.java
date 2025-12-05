@@ -12,7 +12,7 @@ public class InputHelper {
 
     private static final String REGEX_NAME = "^[a-zA-ZğüşıöçĞÜŞİÖÇ\\s\\-]{2,50}$";
     private static final String REGEX_NAME2 = "^[a-zA-ZğüşıöçĞÜŞİÖÇ\\s\\-]+$";
-    private static final String REGEX_PHONE = "^(\\(\\d{3}\\)|\\d{3})[-\\s]?\\d{3}[-\\s]?\\d{4}$";
+    private static final String REGEX_PHONE = "^\\d{3}-\\d{3}-\\d{4}$";
     private static final String REGEX_EMAIL = "^[a-zA-Z0-9][a-zA-Z0-9._-]*@[a-zA-Z0-9]+([.-][a-zA-Z0-9]+)*\\.[a-zA-Z]{2,}$";
     private static final String REGEX_PASSWORD = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=!])(?=\\S+$).{8,}$";
 
