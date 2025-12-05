@@ -11,7 +11,7 @@ public class InputHelper {
     private final Scanner scanner;
 
     private static final String REGEX_NAME = "^[a-zA-ZğüşıöçĞÜŞİÖÇ\\s\\-]{2,50}$";
-    private static final String REGEX_NAME2 = "^[a-zA-ZğüşıöçĞÜŞİÖÇ\\s\\-]";
+    private static final String REGEX_NAME2 = "^[a-zA-ZğüşıöçĞÜŞİÖÇ\\s\\-]+$";
     private static final String REGEX_PHONE = "^(\\(\\d{3}\\)|\\d{3})[-\\s]?\\d{3}[-\\s]?\\d{4}$";
     private static final String REGEX_EMAIL = "^[a-zA-Z0-9][a-zA-Z0-9._-]*@[a-zA-Z0-9]+([.-][a-zA-Z0-9]+)*\\.[a-zA-Z]{2,}$";
     private static final String REGEX_PASSWORD = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=!])(?=\\S+$).{8,}$";
@@ -185,6 +185,40 @@ public class InputHelper {
             // Boşluk içeremez
             if (input.contains(" ")) {
                 System.out.println(" ERROR: Nickname cannot contain spaces!");
+                continue;
+            }
+
+            return input;
+        }
+    }
+
+    public String readNumeric(String label, boolean isRequired) {
+        while (true) {
+            System.out.print(label + ": ");
+            String input = scanner.nextLine().trim();
+
+            // 1. Boşluk Kontrolü
+            if (input.isEmpty()) {
+                if (!isRequired) return "";
+                System.out.println(" ❌ ERROR: This field is required!");
+                continue;
+            }
+
+            // 2. Uzunluk Kontrolü (Maksimum 10 karakter)
+            if (input.length() > 10) {
+                System.out.println(" ❌ ERROR: Input cannot exceed 10 characters!");
+                continue;
+            }
+
+            // 3. Karakter Kontrolü (Sadece Rakam ve Tire)
+            // Regex Açıklaması: ^[0-9-]+$
+            // ^     : Başlangıç
+            // [0-9] : Rakamlar
+            // -     : Tire işareti
+            // +     : En az bir karakter olmalı
+            // $     : Bitiş
+            if (!input.matches("^[0-9-]+$")) {
+                System.out.println(" ❌ ERROR: Only numbers (0-9) and hyphens (-) are allowed!");
                 continue;
             }
 

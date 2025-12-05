@@ -44,7 +44,7 @@ public class TesterMenu extends BaseMenu {
             case "4": performCustomSearch(); break;
             case "5": performSort(); break;
             case "6": changePassword(); break;
-            default: System.out.println("❌ Invalid selection!");
+            default: System.out.println("Invalid selection!");
         }
     }
 
@@ -61,7 +61,7 @@ public class TesterMenu extends BaseMenu {
         if (ch.equals("1")) { field = "first_name"; isNameField = true; }
         else if (ch.equals("2")) { field = "last_name"; isNameField = true; }
         else if (ch.equals("3")) { field = "phone_primary"; }
-        else { System.out.println("❌ Invalid field."); return; }
+        else { System.out.println("Invalid field."); return; }
 
         String key;
         // Eğer isim aranıyorsa özel karakter kontrolü için readName kullan
@@ -69,7 +69,8 @@ public class TesterMenu extends BaseMenu {
             key = inputHelper.readName2("Enter Keyword", true);
         } else {
             // Telefon veya genel arama ise sadece boş olmamasını kontrol et
-            key = inputHelper.readRequiredString("Enter Keyword");
+            key = inputHelper.readNumeric("Enter Phone (Max 10 numbers)", true);
+
         }
 
         printContactList(contactDAO.searchContacts(field, key));
@@ -87,42 +88,44 @@ public class TesterMenu extends BaseMenu {
 
         switch (choice) {
             case "1":
-                // İsimde özel karakter olamaz
+
                 name = inputHelper.readName2("Name", true);
 
-                // Ay kontrolü (Sayı olmalı ve 1-12 arasında olmalı)
-                int mInput = inputHelper.readValidInt("Month (1-12): ");
-                if (mInput < 1 || mInput > 12) {
-                    System.out.println("❌ Invalid month! Must be between 1 and 12.");
-                    return;
+
+                while (true) {
+                    int mInput = inputHelper.readValidInt("Month (1-12): ");
+                    if (mInput >= 1 && mInput <= 12) {
+                        month = String.valueOf(mInput);
+                        break;
+                    }
+                    System.out.println(" Invalid month! Must be between 1 and 12.");
                 }
-                month = String.valueOf(mInput);
                 break;
 
             case "2":
                 surname = inputHelper.readName2("Surname", true);
 
-                // Yıl kontrolü (Sayı olmalı ve mantıklı bir aralıkta olmalı)
-                int yInput = inputHelper.readValidInt("Year (YYYY): ");
-                if (yInput < 1900 || yInput > 2100) {
-                    System.out.println("❌ Invalid year! Must be between 1900 and 2100.");
-                    return;
+                while (true) {
+                    int yInput = inputHelper.readValidInt("Year (YYYY): ");
+                    if (yInput >= 1900 && yInput <= 2100) {
+                        year = String.valueOf(yInput);
+                        break;
+                    }
+                    System.out.println("Invalid year! Must be between 1900 and 2100.");
                 }
-                year = String.valueOf(yInput);
                 break;
 
             case "3":
                 name = inputHelper.readName2("Name", true);
                 nickname = inputHelper.readNickname("Nickname", true);
                 break;
-
             case "4":
                 name = inputHelper.readName2("Name", true);
                 linkedin = inputHelper.readRequiredString("LinkedIn Keyword");
                 break;
 
             default:
-                System.out.println("❌ Invalid selection.");
+                System.out.println("Invalid selection.");
                 return;
         }
 
@@ -147,33 +150,66 @@ public class TesterMenu extends BaseMenu {
 
             // Mantıksal kontroller
             if (min < 0 || max < 0) {
-                System.out.println("❌ Age cannot be negative.");
+                System.out.println("Age cannot be negative.");
             } else if (min > max) {
-                System.out.println("❌ Invalid range! Min age cannot be greater than Max age.");
+                System.out.println("Invalid range! Min age cannot be greater than Max age.");
             } else {
                 printContactList(contactDAO.searchByAgeRange(min, max));
             }
         } else {
-            System.out.println("❌ Invalid selection.");
+            System.out.println("Invalid selection.");
         }
     }
 
     protected void performSort() {
         System.out.println("\n--- SORT CONTACTS ---");
-        System.out.println("Field: 1. Name  2. Surname  3. Birth Date");
 
-        String f = inputHelper.readRequiredString("Select Field");
-        String dbField = "first_name";
+        String dbField = null;
 
-        if (f.equals("2")) dbField = "last_name";
-        else if (f.equals("3")) dbField = "birth_date";
-        else if (!f.equals("1")) {
-            System.out.println("⚠️ Invalid field, defaulting to 'Name'.");
+        // 1. DÖNGÜ: Alan Seçimi
+        while (dbField == null) {
+            System.out.println("Field: 1. Name  2. Surname  3. Birth Date");
+            String f = inputHelper.readRequiredString("Select Field");
+
+            switch (f) {
+                case "1":
+                    dbField = "first_name";
+                    break;
+                case "2":
+                    dbField = "last_name";
+                    break;
+                case "3":
+                    dbField = "birth_date";
+                    break;
+                default:
+                    System.out.println("Invalid selection! Please enter 1, 2, or 3.");
+            }
         }
 
-        System.out.println("Order: 1. Ascending (A-Z)  2. Descending (Z-A)");
-        String orderChoice = inputHelper.readRequiredString("Select Order");
-        boolean asc = orderChoice.equals("1");
+        Boolean asc = null;
+
+        // 2. DÖNGÜ: Sıralama Yönü
+        while (asc == null) {
+
+            if (dbField.equals("birth_date")) {
+                System.out.println("Order: 1. Chronological (Oldest - Newest)  2. Reverse (Newest - Oldest)");
+            } else {
+                System.out.println("Order: 1. Ascending (A-Z)  2. Descending (Z-A)");
+            }
+
+            String orderChoice = inputHelper.readRequiredString("Select Order");
+
+            switch (orderChoice) {
+                case "1":
+                    asc = true;
+                    break;
+                case "2":
+                    asc = false;
+                    break;
+                default:
+                    System.out.println("Invalid selection! Please enter 1 or 2.");
+            }
+        }
 
         printContactList(contactDAO.getContactsSorted(dbField, asc));
     }
