@@ -7,7 +7,7 @@ public class PasswordUtil {
 
     public static String hashPassword(String password) {
         try {
-            MessageDigest md = MessageDigest.getInstance("MD5");
+            MessageDigest md = MessageDigest.getInstance("SHA-256"); // Changed to SHA-256
             md.update(password.getBytes());
             byte[] bytes = md.digest();
 

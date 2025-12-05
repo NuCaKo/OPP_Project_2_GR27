@@ -30,6 +30,7 @@ public class UserDAO {
                 user.setLastName(rs.getString("last_name"));
 
 
+
                 try {
                     user.setRole(Role.valueOf(rs.getString("role")));
                 } catch (IllegalArgumentException e) {
