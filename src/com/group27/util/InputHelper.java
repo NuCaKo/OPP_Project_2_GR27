@@ -11,7 +11,8 @@ public class InputHelper {
     private final Scanner scanner;
 
     private static final String REGEX_NAME = "^[a-zA-ZğüşıöçĞÜŞİÖÇ\\s\\-]{2,50}$";
-    private static final String REGEX_PHONE = "^[0-9\\s\\-\\(\\)]{10,15}$";
+    private static final String REGEX_NAME2 = "^[a-zA-ZğüşıöçĞÜŞİÖÇ\\s\\-]";
+    private static final String REGEX_PHONE = "^(\\(\\d{3}\\)|\\d{3})[-\\s]?\\d{3}[-\\s]?\\d{4}$";
     private static final String REGEX_EMAIL = "^[a-zA-Z0-9][a-zA-Z0-9._-]*@[a-zA-Z0-9]+([.-][a-zA-Z0-9]+)*\\.[a-zA-Z]{2,}$";
     private static final String REGEX_PASSWORD = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=!])(?=\\S+$).{8,}$";
 
@@ -68,11 +69,21 @@ public class InputHelper {
         );
     }
 
+    public String readName2 (String label, boolean isRequired) {
+        return getValidatedInput(
+                label + ": ",
+                REGEX_NAME2,
+                "ERROR: Name must contain only letters!",
+                !isRequired
+        );
+    }
+
     public String readPhone(String label, boolean isRequired) {
         return getValidatedInput(
                 label + ": ",
                 REGEX_PHONE,
                 "ERROR: Invalid Phone Format! (e.g. 555-123-4567)",
+
                 !isRequired
         );
     }

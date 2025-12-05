@@ -5,6 +5,7 @@ import com.group27.service.AuthService;
 import com.group27.ui.Menu;
 import com.group27.ui.MenuSelector;
 import com.group27.ui.Animation;
+import com.group27.util.PasswordUtil;
 
 
 import java.util.Scanner;
@@ -12,7 +13,7 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
 
-        Animation.showStartupAnimation();
+        //Animation.showStartupAnimation();
 
         Scanner scanner = new Scanner(System.in);
         AuthService authService = new AuthService();
@@ -20,6 +21,10 @@ public class Main {
         System.out.println("******************************************");
         System.out.println("* CONTACT MANAGEMENT SYSTEM (GRUP 27)    *");
         System.out.println("******************************************");
+
+
+        String hashedValue = PasswordUtil.hashPassword("tt");
+        System.out.println("Hashed value of 'tt': " + hashedValue);
 
         while (true) {
             System.out.print("\nUSER NAME: ");

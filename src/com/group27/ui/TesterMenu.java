@@ -2,17 +2,17 @@ package com.group27.ui;
 
 import com.group27.dao.ContactReaderDAO;
 import com.group27.model.User;
-
+import com.group27.util.InputHelper;
 
 public class TesterMenu extends BaseMenu {
 
-
     protected ContactReaderDAO contactDAO;
+    private final InputHelper inputHelper; // InputHelper eklendi
 
     public TesterMenu(User user) {
         super(user);
-
         this.contactDAO = new ContactReaderDAO();
+        this.inputHelper = new InputHelper(scanner); // Helper başlatıldı
     }
 
     @Override
@@ -28,7 +28,9 @@ public class TesterMenu extends BaseMenu {
             System.out.println("6. Change Password");
             printFooter();
 
-            String choice = scanner.nextLine();
+            System.out.print("Select: ");
+            String choice = scanner.nextLine(); // Menü seçimi basit kalabilir
+
             if (choice.equals("0")) running = false;
             else handleTesterOperations(choice);
         }
@@ -49,16 +51,27 @@ public class TesterMenu extends BaseMenu {
     protected void performSearch() {
         System.out.println("\n--- SINGLE FIELD SEARCH ---");
         System.out.println("1. First Name  2. Last Name  3. Phone");
-        System.out.print("Select Field: ");
-        String ch = scanner.nextLine();
-        String field = "";
-        if (ch.equals("1")) field = "first_name";
-        else if (ch.equals("2")) field = "last_name";
-        else if (ch.equals("3")) field = "phone_primary";
-        else { System.out.println("Invalid field."); return; }
 
-        System.out.print("Enter Keyword: ");
-        String key = scanner.nextLine();
+        // Boş geçilemez string okuma
+        String ch = inputHelper.readRequiredString("Select Field");
+
+        String field = "";
+        boolean isNameField = false;
+
+        if (ch.equals("1")) { field = "first_name"; isNameField = true; }
+        else if (ch.equals("2")) { field = "last_name"; isNameField = true; }
+        else if (ch.equals("3")) { field = "phone_primary"; }
+        else { System.out.println("❌ Invalid field."); return; }
+
+        String key;
+        // Eğer isim aranıyorsa özel karakter kontrolü için readName kullan
+        if (isNameField) {
+            key = inputHelper.readName2("Enter Keyword", true);
+        } else {
+            // Telefon veya genel arama ise sadece boş olmamasını kontrol et
+            key = inputHelper.readRequiredString("Enter Keyword");
+        }
+
         printContactList(contactDAO.searchContacts(field, key));
     }
 
@@ -68,26 +81,51 @@ public class TesterMenu extends BaseMenu {
         System.out.println("2. Surname AND Birth Year (e.g., 'Yilmaz' in '1990')");
         System.out.println("3. Name AND Nickname (e.g., 'Michael' aka 'Boss')");
         System.out.println("4. Name AND LinkedIn Keyword");
-        System.out.print("Select: ");
 
-        String choice = scanner.nextLine();
+        String choice = inputHelper.readRequiredString("Select Scenario");
         String name = null, surname = null, month = null, year = null, nickname = null, linkedin = null;
 
         switch (choice) {
             case "1":
-                System.out.print("Name: "); name = scanner.nextLine().trim();
-                System.out.print("Month (1-12): "); month = scanner.nextLine().trim(); break;
+                // İsimde özel karakter olamaz
+                name = inputHelper.readName2("Name", true);
+
+                // Ay kontrolü (Sayı olmalı ve 1-12 arasında olmalı)
+                int mInput = inputHelper.readValidInt("Month (1-12): ");
+                if (mInput < 1 || mInput > 12) {
+                    System.out.println("❌ Invalid month! Must be between 1 and 12.");
+                    return;
+                }
+                month = String.valueOf(mInput);
+                break;
+
             case "2":
-                System.out.print("Surname: "); surname = scanner.nextLine().trim();
-                System.out.print("Year: "); year = scanner.nextLine().trim(); break;
+                surname = inputHelper.readName2("Surname", true);
+
+                // Yıl kontrolü (Sayı olmalı ve mantıklı bir aralıkta olmalı)
+                int yInput = inputHelper.readValidInt("Year (YYYY): ");
+                if (yInput < 1900 || yInput > 2100) {
+                    System.out.println("❌ Invalid year! Must be between 1900 and 2100.");
+                    return;
+                }
+                year = String.valueOf(yInput);
+                break;
+
             case "3":
-                System.out.print("Name: "); name = scanner.nextLine().trim();
-                System.out.print("Nickname: "); nickname = scanner.nextLine().trim(); break;
+                name = inputHelper.readName2("Name", true);
+                nickname = inputHelper.readNickname("Nickname", true);
+                break;
+
             case "4":
-                System.out.print("Name: "); name = scanner.nextLine().trim();
-                System.out.print("LinkedIn Keyword: "); linkedin = scanner.nextLine().trim(); break;
-            default: System.out.println("❌ Invalid."); return;
+                name = inputHelper.readName2("Name", true);
+                linkedin = inputHelper.readRequiredString("LinkedIn Keyword");
+                break;
+
+            default:
+                System.out.println("❌ Invalid selection.");
+                return;
         }
+
         printContactList(contactDAO.searchComplex(name, surname, null, null, month, year, nickname, linkedin));
     }
 
@@ -95,30 +133,47 @@ public class TesterMenu extends BaseMenu {
         System.out.println("\n--- CUSTOM SEARCH ---");
         System.out.println("1. Search by Email Domain (e.g. gmail, khas)");
         System.out.println("2. Search by Age Range");
-        System.out.print("Select: ");
-        String choice = scanner.nextLine();
+
+        String choice = inputHelper.readRequiredString("Select");
+
         if (choice.equals("1")) {
-            System.out.print("Domain: ");
-            printContactList(contactDAO.searchByEmailDomain(scanner.nextLine().trim()));
+            String domain = inputHelper.readRequiredString("Domain");
+            printContactList(contactDAO.searchByEmailDomain(domain));
+
         } else if (choice.equals("2")) {
-            try {
-                System.out.print("Min Age: "); int min = Integer.parseInt(scanner.nextLine());
-                System.out.print("Max Age: "); int max = Integer.parseInt(scanner.nextLine());
+            // readValidInt zaten sayısal hata kontrolü yapar (try-catch gerekmez)
+            int min = inputHelper.readValidInt("Min Age: ");
+            int max = inputHelper.readValidInt("Max Age: ");
+
+            // Mantıksal kontroller
+            if (min < 0 || max < 0) {
+                System.out.println("❌ Age cannot be negative.");
+            } else if (min > max) {
+                System.out.println("❌ Invalid range! Min age cannot be greater than Max age.");
+            } else {
                 printContactList(contactDAO.searchByAgeRange(min, max));
-            } catch (Exception e) { System.out.println("❌ Invalid input."); }
+            }
+        } else {
+            System.out.println("❌ Invalid selection.");
         }
     }
 
     protected void performSort() {
         System.out.println("\n--- SORT CONTACTS ---");
         System.out.println("Field: 1. Name  2. Surname  3. Birth Date");
-        String f = scanner.nextLine();
+
+        String f = inputHelper.readRequiredString("Select Field");
         String dbField = "first_name";
+
         if (f.equals("2")) dbField = "last_name";
         else if (f.equals("3")) dbField = "birth_date";
+        else if (!f.equals("1")) {
+            System.out.println("⚠️ Invalid field, defaulting to 'Name'.");
+        }
 
         System.out.println("Order: 1. Ascending (A-Z)  2. Descending (Z-A)");
-        boolean asc = scanner.nextLine().equals("1");
+        String orderChoice = inputHelper.readRequiredString("Select Order");
+        boolean asc = orderChoice.equals("1");
 
         printContactList(contactDAO.getContactsSorted(dbField, asc));
     }
