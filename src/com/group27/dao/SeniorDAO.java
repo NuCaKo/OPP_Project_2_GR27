@@ -31,7 +31,7 @@ public class SeniorDAO extends JuniorDAO {
     }
 
     public boolean deleteContact(int contactId) {
-        String sql = "DELETE FROM contacts WHERE contact_id = ?";
+        String sql = "UPDATE contacts SET is_deleted = 1 WHERE contact_id = ?";
 
         try (Connection conn = DatabaseHelper.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -41,7 +41,7 @@ public class SeniorDAO extends JuniorDAO {
             return affectedRows > 0;
 
         } catch (SQLException e) {
-            System.err.println("Database Error (Delete): " + e.getMessage());
+            System.err.println("Database Error (Soft Delete): " + e.getMessage());
             return false;
         }
     }

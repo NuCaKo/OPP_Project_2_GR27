@@ -101,6 +101,30 @@ public class InputHelper {
         return getValidatedInput(label + ": ", null, "", false);
     }
 
+    public int readInt(String label) {
+        while (true) {
+            String input = readRequiredString(label);
+
+            try {
+                return Integer.parseInt(input);
+            } catch (NumberFormatException e) {
+                System.out.println("❌ ERROR: Invalid input! Please enter a valid number.");
+            }
+        }
+    }
+
+    public int readInt(String label, int min, int max) {
+        while (true) {
+            int value = readInt(label); // Yukarıdaki metodu kullanır
+
+            if (value >= min && value <= max) {
+                return value;
+            }
+
+            System.out.println("❌ ERROR: Please enter a number between " + min + " and " + max + ".");
+        }
+    }
+
     public int readValidInt(String prompt) {
         while (true) {
             System.out.print(prompt);
