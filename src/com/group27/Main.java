@@ -2,10 +2,7 @@ package com.group27;
 
 import com.group27.model.User;
 import com.group27.service.AuthService;
-import com.group27.ui.LoadingScreen;
-import com.group27.ui.Menu;
-import com.group27.ui.MenuSelector;
-import com.group27.ui.Animation;
+import com.group27.ui.*;
 import com.group27.util.PasswordUtil;
 
 
@@ -21,12 +18,10 @@ public class Main {
         AuthService authService = new AuthService();
 
         System.out.println("******************************************");
-        System.out.println("* CONTACT MANAGEMENT SYSTEM (GRUP 27)    *");
+        System.out.println("* CONTACT MANAGEMENT SYSTEM (GROUP 27)    *");
         System.out.println("******************************************");
 
 
-        String hashedValue = PasswordUtil.hashPassword("tt");
-        System.out.println("Hashed value of 'tt': " + hashedValue);
 
         while (true) {
             System.out.print("\nUSER NAME: ");
@@ -42,11 +37,10 @@ public class Main {
                 menu.show();
             }
 
-            System.out.print("Programdan çıkılsın mı? (y/n): ");
+            System.out.print("Press [y] to end the program, press [any key] to continue): ");
             String exit = scanner.nextLine();
             if (exit.equalsIgnoreCase("y")) {
-                Animation.showShutdownAnimation();
-                System.out.println("Goodbye!");
+               TerminationScreen.show();
                 break;
             }
         }
