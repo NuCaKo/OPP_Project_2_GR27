@@ -17,7 +17,7 @@ public class DatabaseHelper {
             try {
                 Class.forName("com.mysql.cj.jdbc.Driver");
                 connection = DriverManager.getConnection(URL, USER, PASSWORD);
-                System.out.println("Connection established successfully.");
+                //System.out.println("Connection established successfully.");
             } catch (ClassNotFoundException e) {
                 System.err.println("MySql JDBC Driver not found. Check LİB folder.");
                 throw new SQLException(e);

@@ -15,7 +15,7 @@ public class Contact {
     private Timestamp createdAt;
     private Timestamp updatedAt;
 
-    // --- CONSTRUCTORS
+    //CONSTRUCTORS
     public Contact() {}
 
     public Contact(String firstName, String lastName, String nickname, String phonePrimary, String email, String linkedinUrl, Date birthDate) {
@@ -60,18 +60,11 @@ public class Contact {
 
 
 
-    /**
-     * UI için Tam İsim döndürür.
-     * @return "Ahmet Yılmaz" formatında string.
-     */
     public String getFullName() {
         return firstName + " " + lastName;
     }
 
-    /**
-     * UI'da null değerler yerine "-" basmak için güvenli getter.
-     * BaseMenu.java içindeki "if null" kontrollerini azaltır.
-     */
+
     public String getSafeNickname() {
         return (nickname == null || nickname.isEmpty()) ? "-" : nickname;
     }
@@ -80,9 +73,6 @@ public class Contact {
         return (linkedinUrl == null || linkedinUrl.isEmpty()) ? "-" : linkedinUrl;
     }
 
-    /**
-     * Nesneyi konsola yazdırdığında (debug için) anlamlı çıktı verir.
-     */
     @Override
     public String toString() {
         return "Contact{" +
