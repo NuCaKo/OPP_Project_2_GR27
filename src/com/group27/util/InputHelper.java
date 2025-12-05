@@ -35,20 +35,17 @@ public class InputHelper {
             if (input == null) input = "";
             input = input.trim();
 
-            // 1. Boşluk Kontrolü
             if (input.isEmpty()) {
                 if (allowEmpty) return "";
                 System.out.println(" ERROR: This field is required! Cannot be empty.");
                 continue;
             }
 
-            // 2. Boşluk Karakteri Kontrolü
             if (input.replace(" ", "").isEmpty()) {
                 System.out.println(" ERROR: Input cannot contain only spaces!");
                 continue;
             }
 
-            // 3. Regex Kontrolü
             if (regex != null && !input.matches(regex)) {
                 System.out.println(" " + errorMsg);
                 continue;
@@ -108,20 +105,20 @@ public class InputHelper {
             try {
                 return Integer.parseInt(input);
             } catch (NumberFormatException e) {
-                System.out.println("❌ ERROR: Invalid input! Please enter a valid number.");
+                System.out.println("ERROR: Invalid input! Please enter a valid number.");
             }
         }
     }
 
     public int readInt(String label, int min, int max) {
         while (true) {
-            int value = readInt(label); // Yukarıdaki metodu kullanır
+            int value = readInt(label);
 
             if (value >= min && value <= max) {
                 return value;
             }
 
-            System.out.println("❌ ERROR: Please enter a number between " + min + " and " + max + ".");
+            System.out.println("ERROR: Please enter a number between " + min + " and " + max + ".");
         }
     }
 
@@ -168,8 +165,20 @@ public class InputHelper {
 
             try {
                 LocalDate localDate = LocalDate.parse(input, formatter);
-                if (localDate.getYear() < 1900 || localDate.getYear() > 2100) {
-                    System.out.println(" ERROR: Year must be between 1900 and 2100.");
+                LocalDate today = LocalDate.now();
+
+                if (localDate.isAfter(today)) {
+                    System.out.println(" ERROR: Date cannot be in the future!");
+                    continue;
+                }
+
+                if (localDate.plusYears(18).isAfter(today)) {
+                    System.out.println(" ERROR: User must be at least 18 years old.");
+                    continue;
+                }
+
+                if (localDate.getYear() < 1900) {
+                    System.out.println(" ERROR: Year must be 1900 or later.");
                     continue;
                 }
                 return java.sql.Date.valueOf(localDate);
@@ -190,7 +199,7 @@ public class InputHelper {
                         "   - At least 1 Digit (0-9)\n" +
                         "   - At least 1 Special Char (@#$%^&+=!)\n" +
                         "   - No spaces allowed.",
-                false // Zorunlu (Boş geçilemez)
+                false
         );
     }
 
@@ -199,14 +208,12 @@ public class InputHelper {
             System.out.print(label + ": ");
             String input = scanner.nextLine().trim();
 
-            // Boş bırakılabilir
             if (input.isEmpty()) {
                 if (!isRequired) return "";
                 System.out.println(" ERROR: Nickname is required!");
                 continue;
             }
 
-            // Boşluk içeremez
             if (input.contains(" ")) {
                 System.out.println(" ERROR: Nickname cannot contain spaces!");
                 continue;
@@ -221,28 +228,19 @@ public class InputHelper {
             System.out.print(label + ": ");
             String input = scanner.nextLine().trim();
 
-            // 1. Boşluk Kontrolü
             if (input.isEmpty()) {
                 if (!isRequired) return "";
-                System.out.println(" ❌ ERROR: This field is required!");
+                System.out.println(" ERROR: This field is required!");
                 continue;
             }
 
-            // 2. Uzunluk Kontrolü (Maksimum 10 karakter)
             if (input.length() > 10) {
-                System.out.println(" ❌ ERROR: Input cannot exceed 10 characters!");
+                System.out.println(" ERROR: Input cannot exceed 10 characters!");
                 continue;
             }
 
-            // 3. Karakter Kontrolü (Sadece Rakam ve Tire)
-            // Regex Açıklaması: ^[0-9-]+$
-            // ^     : Başlangıç
-            // [0-9] : Rakamlar
-            // -     : Tire işareti
-            // +     : En az bir karakter olmalı
-            // $     : Bitiş
             if (!input.matches("^[0-9-]+$")) {
-                System.out.println(" ❌ ERROR: Only numbers (0-9) and hyphens (-) are allowed!");
+                System.out.println(" ERROR: Only numbers (0-9) and hyphens (-) are allowed!");
                 continue;
             }
 
