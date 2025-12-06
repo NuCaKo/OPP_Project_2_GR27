@@ -6,7 +6,6 @@ import java.util.Random;
 
 public class LoadingScreen {
 
-    // ANSI Colors
     private static final String RESET = "\033[0m";
     private static final String CYAN = "\033[0;36m";
     private static final String CYAN_BOLD = "\033[1;36m";
@@ -22,14 +21,12 @@ public class LoadingScreen {
     private static final String RED_BOLD = "\033[1;31m";
     private static final String MAGENTA = "\033[0;35m";
 
-    // Configuration
     private static final int WIDTH = 130;
     private static final int HEIGHT = 43;
     private static final int DURATION_MS = 15000;
     private static final int FPS = 15;
     private static final long FRAME_DELAY = 1000 / FPS;
 
-    // Rabbit Frames (User Provided)
     private static final String[] RABBIT_FRAME1 = {
             "%%%%%%%#%%%%%%%%%#%%#%%%%%%%#%%%%%#%%%%%#%%%%%%#%%%%#%#%%%#%%%%%%%%%%##%%%%#%%%%%#%%%#%%%#%#%%%%%%%%",
             "%%%%%%%#%%%%%%#%%#%%#%%%%%%%#%%%%%%%%%%%#%%%%%%#%#%%%%#%%%%%%%%%%%%%###%%%%#%%%#%%%%%#%%%#%#%%%%%%%%",
@@ -99,7 +96,6 @@ public class LoadingScreen {
     private static final String MATRIX_CHARS = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     private static final Random RANDOM = new Random();
 
-    // Rain Logic State
     private static final int RAIN_AREA_HEIGHT = 32;
     private static final int RAIN_AREA_WIDTH = WIDTH - 4;
 
@@ -120,32 +116,25 @@ public class LoadingScreen {
         int rabbitWidth = RABBIT_FRAME1[0].length();
 
         try {
-            // Hide Cursor
             System.out.print("\033[?25l");
-            // Clear Screen
             System.out.print("\033[H\033[2J");
 
-            // --- MAIN ANIMATION LOOP ---
             while (System.currentTimeMillis() < endTime) {
                 long elapsed = System.currentTimeMillis() - startTime;
                 double progress = (double) elapsed / DURATION_MS;
                 if (progress > 1.0) progress = 1.0;
 
-                // Move Rabbit
                 int startX = -rabbitWidth;
                 int endX = WIDTH;
                 int rabbitLeft = (int) (startX + (endX - startX) * progress);
 
-                // Update Rain
                 updateRain();
 
-                // Update Logs
                 if (RANDOM.nextInt(100) < 5) {
                     logs.add(getTimeStamp(startTime) + " " + generateFakeLog());
                     if (logs.size() > 3) logs.remove(0);
                 }
 
-                // Render Frame
                 StringBuilder sb = new StringBuilder();
                 sb.append("\033[H");
 
@@ -158,7 +147,6 @@ public class LoadingScreen {
                 frameCount++;
             }
 
-            // --- EXIT ANIMATION (Vertical Collapse / CRT Off) ---
             int totalLines = 45;
             for (int mask = 0; mask < totalLines / 2 + 2; mask++) {
                 StringBuilder sb = new StringBuilder();
@@ -185,31 +173,22 @@ public class LoadingScreen {
         int currentLine = 0;
         int rabbitWidth = RABBIT_FRAME1[0].length();
 
-        // Pulse Effect for Borders (Changed to RED/YELLOW for harmony)
         String borderColor = WHITE;
 
-        // --- TOP BORDER ---
         appendLine(sb, borderColor + "╔" + "═".repeat(WIDTH - 2) + "╗" + RESET, currentLine++, maskHeight);
 
-        // --- HEADER ---
         String title = " ROLE-BASED CONTACT MANAGEMENT SYSTEM ";
         String subtitle = " CMPE 343 - FALL 2025 ";
 
-        // Using YELLOW for text to match warmth
         String titleStr = BOLD + YELLOW + title + RESET;
         String subStr = BOLD + WHITE + subtitle + RESET;
 
-        // centerText helper adds color, but let's just use it and rely on borders
-        // Actually centerText hardcodes WHITE. Let's fix that or accept it.
-        // User wants harmony. White is neutral. Let's leave text White/Yellow.
 
         appendLine(sb, borderColor + "║" + RESET + centerText(title, WIDTH - 2).replace(WHITE, YELLOW) + borderColor + "║" + RESET, currentLine++, maskHeight);
         appendLine(sb, borderColor + "║" + RESET + centerText(subtitle, WIDTH - 2) + borderColor + "║" + RESET, currentLine++, maskHeight);
 
-        // Separator
         appendLine(sb, borderColor + "╠" + "═".repeat(WIDTH - 2) + "╣" + RESET, currentLine++, maskHeight);
 
-        // --- RABBIT & RAIN AREA ---
         String[] currentRabbit = ((frameCount / 3) % 2 == 0) ? RABBIT_FRAME1 : RABBIT_FRAME2;
 
         for (int r = 0; r < RAIN_AREA_HEIGHT; r++) {
@@ -220,7 +199,6 @@ public class LoadingScreen {
                 char outChar = ' ';
                 String color = RESET;
 
-                // Check Rabbit
                 int rabbitTop = (RAIN_AREA_HEIGHT - 30) / 2;
                 int rr = r - rabbitTop;
                 int rc = c - rabbitLeft;
@@ -236,14 +214,12 @@ public class LoadingScreen {
 
                 if (insideRabbit) {
                     outChar = rabbitCh;
-                    // Rabbit is Red/Yellow striped
                     if ((rc + frameCount) % 6 < 3) {
                         color = RED;
                     } else {
                         color = YELLOW;
                     }
                 } else {
-                    // Check Rain
                     if (c < RAIN_AREA_WIDTH && r < RAIN_AREA_HEIGHT &&
                             activeColumn != null && activeColumn[c] &&
                             rainState != null && rainState[r][c]) {
@@ -271,27 +247,22 @@ public class LoadingScreen {
             appendLine(sb, lineSb.toString(), currentLine++, maskHeight);
         }
 
-        // Separator
         appendLine(sb, borderColor + "╠" + "═".repeat(WIDTH - 2) + "╣" + RESET, currentLine++, maskHeight);
 
-        // --- LOGS ---
         for(int i=0; i<3; i++) {
             StringBuilder lineSb = new StringBuilder();
             lineSb.append(borderColor).append("║ ").append(RESET);
             String log = (i < logs.size()) ? logs.get(i) : "";
-            // Logs in Yellow/White
             lineSb.append(YELLOW).append(String.format("%-" + (WIDTH - 4) + "s", log)).append(RESET);
             lineSb.append(borderColor).append(" ║").append(RESET);
             appendLine(sb, lineSb.toString(), currentLine++, maskHeight);
         }
 
-        // --- PROGRESS ---
         StringBuilder progSb = new StringBuilder();
         progSb.append(borderColor).append("║ ").append(RESET);
         int barWidth = WIDTH - 4 - 8;
         int filled = (int) (barWidth * progress);
 
-        // Gradient: Red -> RedBold -> Yellow (Fire gradient)
         String barColor;
         if (progress < 0.3) barColor = RED;
         else if (progress < 0.5) barColor = RED_BOLD;
@@ -309,7 +280,6 @@ public class LoadingScreen {
         progSb.append(borderColor).append("║").append(RESET);
         appendLine(sb, progSb.toString(), currentLine++, maskHeight);
 
-        // --- BOTTOM ---
         appendLine(sb, borderColor + "╚" + "═".repeat(WIDTH - 2) + "╝" + RESET, currentLine++, maskHeight);
     }
 

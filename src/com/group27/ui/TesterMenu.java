@@ -20,20 +20,31 @@ public class TesterMenu extends BaseMenu {
         boolean running = true;
         while (running) {
             printHeader("TESTER / VIEWER");
-            System.out.println("1. List All Contacts");
-            System.out.println("2. Single Field Search");
-            System.out.println("3. Multi-Field Search (Scenario Based)");
-            System.out.println("4. Custom Search (Age & Domain)");
-            System.out.println("5. Sort Contacts");
-            System.out.println("6. Change Password");
-            System.out.println("0. Logout"); // Footer yerine manuel yazdık, input prompt çakışmasın diye
+            MenuFrame.printMenuItem(1, "List All Contacts");
+            MenuFrame.printMenuItem(2, "Single Field Search");
+            MenuFrame.printMenuItem(3, "Multi-Field Search (Scenario Based)");
+            MenuFrame.printMenuItem(4, "Custom Search (Age & Domain)");
+            MenuFrame.printMenuItem(5, "Sort Contacts");
+            MenuFrame.printMenuItem(6, "Change Password");
 
-            int choice = input.readInt("Select Option", 0, 6);
+            printFooter();
+
+            String choiceStr = scanner.nextLine();
+            int choice = -1;
+            try {
+                choice = Integer.parseInt(choiceStr);
+            } catch (NumberFormatException e) {
+                // Invalid input
+            }
 
             if (choice == 0) {
                 running = false;
-            } else {
+            } else if (choice >= 1 && choice <= 6) {
                 handleTesterOperations(String.valueOf(choice));
+                System.out.println("\nPress Enter to continue...");
+                scanner.nextLine();
+            } else {
+                System.out.println("Invalid selection!");
             }
         }
     }

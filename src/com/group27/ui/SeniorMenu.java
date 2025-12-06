@@ -19,16 +19,15 @@ public class SeniorMenu extends JuniorMenu {
         boolean running = true;
         while (running) {
             printHeader("SENIOR DEVELOPER");
-
-            System.out.println("1. List All Contacts");
-            System.out.println("2. Single Field Search");
-            System.out.println("3. Multi-Field Search");
-            System.out.println("4. Custom Search");
-            System.out.println("5. Sort Contacts");
-            System.out.println("6. Change Password");
-            System.out.println("7. UPDATE Contact");
-            System.out.println("8. ADD New Contact");   // Senior Feature
-            System.out.println("9. DELETE Contact");    // Senior Feature
+            MenuFrame.printMenuItem(1, "List All Contacts");
+            MenuFrame.printMenuItem(2, "Single Field Search");
+            MenuFrame.printMenuItem(3, "Multi-Field Search");
+            MenuFrame.printMenuItem(4, "Custom Search");
+            MenuFrame.printMenuItem(5, "Sort Contacts");
+            MenuFrame.printMenuItem(6, "Change Password");
+            MenuFrame.printMenuItem(7, "UPDATE Contact");
+            MenuFrame.printMenuItem(8, "ADD New Contact");
+            MenuFrame.printMenuItem(9, "DELETE Contact");
 
             printFooter();
 
@@ -36,29 +35,38 @@ public class SeniorMenu extends JuniorMenu {
 
             if (choice.matches("[1-6]")) {
                 super.handleTesterOperations(choice);
+                System.out.println("\nPress Enter to continue...");
+                scanner.nextLine();
             }
 
             else if (choice.equals("7")) {
                 super.performUpdate();
+                System.out.println("\nPress Enter to continue...");
+                scanner.nextLine();
             }
 
             else if (choice.equals("8")) {
                 performAdd();
+                System.out.println("\nPress Enter to continue...");
+                scanner.nextLine();
             }
             else if (choice.equals("9")) {
                 performDelete();
+                System.out.println("\nPress Enter to continue...");
+                scanner.nextLine();
             }
             else if (choice.equals("0")) {
                 running = false;
             } else {
                 System.out.println("Invalid selection! Please enter 0-9.");
+                try { Thread.sleep(1000); } catch (InterruptedException e) {}
             }
         }
     }
 
 
 
-        protected void performAdd() {
+    protected void performAdd() {
         System.out.println("\n--- ADD NEW CONTACT ---");
 
         Contact c = new Contact();
@@ -69,7 +77,7 @@ public class SeniorMenu extends JuniorMenu {
         String email = input.readEmail("Email (Optional)", false);
 
         if (!email.isEmpty()) c.setEmail(email);
-        Date birthDate = input.readDate("Birth Date", false);
+        Date birthDate = input.readDate("Birth Date", false, true);
         if (birthDate != null) c.setBirthDate(birthDate);
         System.out.print("Nickname (Optional): ");
         String nickname = scanner.nextLine().trim();

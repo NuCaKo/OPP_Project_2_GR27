@@ -19,27 +19,33 @@ public class JuniorMenu extends TesterMenu {
         boolean running = true;
         while (running) {
             printHeader("JUNIOR DEVELOPER");
-            System.out.println("1. List All Contacts");
-            System.out.println("2. Single Field Search");
-            System.out.println("3. Multi-Field Search");
-            System.out.println("4. Custom Search");
-            System.out.println("5. Sort Contacts");
-            System.out.println("6. Change Password");
-            System.out.println("7. UPDATE Contact"); //
+            MenuFrame.printMenuItem(1, "List All Contacts");
+            MenuFrame.printMenuItem(2, "Single Field Search");
+            MenuFrame.printMenuItem(3, "Multi-Field Search");
+            MenuFrame.printMenuItem(4, "Custom Search");
+            MenuFrame.printMenuItem(5, "Sort Contacts");
+            MenuFrame.printMenuItem(6, "Change Password");
+            MenuFrame.printMenuItem(7, "UPDATE Contact");
+
             printFooter();
 
             String choice = scanner.nextLine();
 
             if (choice.matches("[1-6]")) {
                 super.handleTesterOperations(choice);
+                System.out.println("\nPress Enter to continue...");
+                scanner.nextLine();
             }
             else if (choice.equals("7")) {
                 performUpdate();
+                System.out.println("\nPress Enter to continue...");
+                scanner.nextLine();
             }
             else if (choice.equals("0")) {
                 running = false;
             } else {
                 System.out.println("Invalid selection! Please enter 0-7.");
+                try { Thread.sleep(1000); } catch (InterruptedException e) {}
             }
         }
     }
@@ -74,7 +80,7 @@ public class JuniorMenu extends TesterMenu {
         if (!newEmail.isEmpty()) c.setEmail(newEmail);
 
         String currentDate = (c.getBirthDate() == null) ? "-" : c.getBirthDate().toString();
-        Date newDate = input.readDate("Birth Date (" + currentDate + ")", false);
+        Date newDate = input.readDate("Birth Date (" + currentDate + ")", false, true);
         if (newDate != null) c.setBirthDate(newDate);
 
         System.out.print("Nickname (" + c.getSafeNickname() + "): ");

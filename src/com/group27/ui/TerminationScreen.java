@@ -95,6 +95,45 @@ public class TerminationScreen {
             "                                    /____/            "
     };
 
+    // Düzeltilmiş: Her satır dizinin ayrı bir elemanı yapıldı
+    private static final String[] ATATURK_PORTRAIT = {
+            "⠂⠀⠂⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀",
+            "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣤⣄⣠⣄⣠⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀",
+            "⠀⢀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⣴⣶⣶⣿⣿⣾⣿⣿⣿⣿⣾⣷⣦⣄⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀",
+            "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⣴⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣦⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀",
+            "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⣴⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣶⣦⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀",
+            "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡏⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀",
+            "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀",
+            "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀",
+            "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢻⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀",
+            "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀",
+            "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠸⣿⣿⣿⣿⣿⣿⣿⡿⡿⠻⠛⠛⠛⠛⠛⠛⠻⠿⣿⣿⣿⣿⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀",
+            "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢻⣿⣿⣿⣿⣯⣤⣴⣷⣿⣄⠀⠀⣴⣶⣶⣶⢤⣍⠻⣿⣿⡿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀",
+            "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠐⢻⣿⡿⠙⣿⣶⣿⡿⣿⡿⠀⠀⠿⡿⠟⢿⠷⠦⠀⢹⣿⣗⡆⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀",
+            "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⣿⡇⠀⠀⠈⠉⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠸⣿⡿⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀",
+            "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠨⣾⣿⣄⠀⠀⠀⠀⣄⣄⣀⠀⢀⣤⠀⠀⠀⠀⠀⢀⣭⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀",
+            "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠸⢾⣿⣿⠀⠀⠈⠙⣿⣿⣿⣛⠋⠁⠀⠀⠀⠀⢈⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀",
+            "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠛⣿⣿⣷⢀⣶⣷⣿⣧⣽⣾⣶⡆⠀⠀⠀⢀⡟⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀",
+            "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⣿⣿⣌⠉⠁⣾⣿⣷⠀⠈⠁⢠⣦⣼⡿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀",
+            "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢹⣿⣿⣄⠀⠀⠀⠀⠀⠀⢀⣾⣼⠋⡁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀",
+            "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡘⠻⣿⣿⣿⣿⣿⣷⣶⡶⠞⠋⠁⠀⣷⡄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀",
+            "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⣿⠀⠀⡟⣿⣿⡟⠉⠁⠀⠀⠀⢀⣤⣿⣿⣦⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀",
+            "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣼⣿⣿⣧⣀⠀⠈⠿⠀⠀⠀⣀⣴⣾⣿⣿⣿⣿⣿⣿⣦⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀",
+            "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣠⣤⣾⣿⣿⣿⡇⣿⣿⣾⣯⣭⣶⣶⣿⣿⣿⢿⣿⣿⣿⣿⣿⣿⣿⣿⣶⣤⣀⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀",
+            "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣤⣶⣿⣿⣿⣿⣿⣿⣿⣿⡇⠀⠉⢿⣿⣿⠿⠋⠀⠀⢀⣼⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⣦⣤⣀⠀⠀⠀⠀⠀⠀⠀",
+            "⠀⠀⠀⠀⠀⠀⠀⠀⠀⣤⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⠀⠀⣿⣿⠋⠀⠀⠀⢠⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣶⣦⣤⠀⠀⠀",
+            "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⢹⣿⣿⣿⣿⢯⣿⣿⣻⣿⣿⣿⣧⢠⣾⣿⣿⡆⠀⠀⢠⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣯⣽⣿⠿⠟⢛⣿⣻⠟⠀⠀⠀",
+            "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠺⣾⣿⣿⣿⣮⣻⣿⣿⣿⣿⣿⣿⢿⣿⣿⣿⣿⣆⣴⣿⡿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠿⠿⢻⣿⢏⣵⣽⣶⡴⢻⠿⢯⣄⡀⠀⠀",
+            "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣾⣷⣽⢿⣯⣿⢿⣿⣿⣯⡾⠋⢁⣴⣿⣿⣿⡟⢠⣞⣿⡾⢹⡿⠿⠛⠋⠉⠀⠈⠀⠀⠀⠙⢷⣄",
+            "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢉⣿⣾⣿⣿⣿⢿⣟⣿⣿⣽⠿⠋⠙⠳⣿⣫⣾⣟⣿⠋⠀⣠⣾⣿⠞⢡⣿⠞⠛⠋⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣽",
+            "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠉⠉⠓⠋⣥⣼⠟⠉⠀⠀⢀⠀⠀⠀⣸⡏⢹⡟⢿⠴⠞⠃⠈⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣀⣤⡤⠶⠞⠋⠁",
+            "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠸⠟⠃⠀⠀⠀⠀⣾⣃⣠⡶⠟⠁⠀⠀⠀⠀⠀⠀⠀⠀⠠⣾⣖⣞⣧⣤⠤⠶⠶⠶⠚⠛⠛⠉⠉⠉⠀⠀⠀⠀⠀⠀",
+            "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠉⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀",
+            "                                     MUSTAFA KEMAL ATATÜRK                                          "
+    };
+
+    private static final String ATATURK_QUOTE = "Benim naçiz vücudum elbet bir gün toprak olacaktır, ancak Türkiye Cumhuriyeti ilelebet payidar kalacaktır.";
+
     private static final String MATRIX_CHARS = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     private static final Random RANDOM = new Random();
 
@@ -167,11 +206,60 @@ public class TerminationScreen {
             System.out.print("\033[H\033[2J");
             System.out.flush();
 
+            // Tribute Animation
+            showAtaturkTribute();
+
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
         } finally {
             System.out.print("\033[?25h"); // Show cursor
         }
+    }
+
+    private static void showAtaturkTribute() throws InterruptedException {
+        // Ekranı temizle
+        System.out.print("\033[H\033[2J");
+
+        // Portreyi dikeyde ortala (Negatif olmaması için Math.max kullanıldı)
+        int startRow = Math.max(1, (HEIGHT - ATATURK_PORTRAIT.length) / 2 - 3);
+
+        System.out.print(WHITE_BOLD);
+
+        // 1. Portreyi Satır Satır Çiz
+        for (int i = 0; i < ATATURK_PORTRAIT.length; i++) {
+            String line = ATATURK_PORTRAIT[i];
+            // Satırı yatayda ortala
+            int paddingLeft = Math.max(1, (WIDTH - line.length()) / 2);
+
+            // İmleci konumlandır ve satırı bas
+            System.out.printf("\033[%d;%dH", startRow + i, paddingLeft);
+            System.out.print(line);
+            System.out.flush();
+
+            // Çizim hızı (Satır satır efekt için)
+            Thread.sleep(50);
+        }
+
+        // 2. Sözü Yaz (Portrenin bittiği yerin 2 satır altına)
+        String quote = ATATURK_QUOTE;
+        int quoteRow = startRow + ATATURK_PORTRAIT.length + 2;
+        int quotePadding = Math.max(1, (WIDTH - quote.length()) / 2);
+
+        System.out.printf("\033[%d;%dH", quoteRow, quotePadding);
+        System.out.print(WHITE_BOLD + BOLD);
+
+        // Daktilo Efekti
+        for (char c : quote.toCharArray()) {
+            System.out.print(c);
+            System.out.flush();
+            Thread.sleep(40);
+        }
+
+        System.out.print(RESET);
+
+        // Bekle ve bitir
+        Thread.sleep(5000);
+        System.out.println();
     }
 
     private static void renderFrame(StringBuilder sb, int frameCount, int rabbitLeft, double progress) {

@@ -14,13 +14,14 @@ public abstract class BaseMenu implements Menu {
     protected User user;
     protected Scanner scanner;
     protected UserDAO userDAO;
-    protected InputHelper input; // Tüm alt menüler bunu kullanacak
+    protected InputHelper input;
 
     public BaseMenu(User user) {
         this.user = user;
         this.scanner = new Scanner(System.in);
         this.userDAO = new UserDAO();
         this.input = new InputHelper(this.scanner);
+        MenuFrame.animateMenu();
     }
 
 
@@ -30,7 +31,7 @@ public abstract class BaseMenu implements Menu {
         String oldHash = PasswordUtil.hashPassword(oldPass);
 
         if (!user.getPasswordHash().equals(oldHash)) {
-            System.out.println("❌ Error: Incorrect current password!");
+            System.out.println("Error: Incorrect current password!");
             return;
         }
 
@@ -38,23 +39,24 @@ public abstract class BaseMenu implements Menu {
         String newHash = PasswordUtil.hashPassword(newPass);
 
         if (userDAO.updatePassword(user.getUserId(), newHash)) {
-            System.out.println("✅ Password updated successfully!");
+            System.out.println("Password updated successfully!");
             user.setPasswordHash(newHash);
         } else {
-            System.out.println("❌ Database Error!");
+            System.out.println("Database Error!");
         }
     }
 
     protected void printHeader(String title) {
-        System.out.println("\n==========================================");
-        System.out.println("★ " + title + " PANEL");
-        System.out.println("👤 User: " + user.getFullName() + " (" + user.getRole() + ")");
-        System.out.println("==========================================");
+        MenuFrame.printHeader(title + " PANEL",
+                "User: " + user.getFullName() + " [" + user.getRole() + "]");
     }
 
     protected void printFooter() {
-        System.out.println("0. Logout");
-        System.out.print("Select: ");
+        MenuFrame.printFooter();
+    }
+
+    protected void clearScreen() {
+        MenuFrame.clearScreen();
     }
 
     protected void printContactList(List<Contact> list) {

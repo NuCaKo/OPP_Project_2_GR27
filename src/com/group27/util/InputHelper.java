@@ -112,7 +112,7 @@ public class InputHelper {
 
     public int readInt(String label, int min, int max) {
         while (true) {
-            int value = readInt(label);
+            int value = readInt(label); // Yukarıdaki metodu kullanır
 
             if (value >= min && value <= max) {
                 return value;
@@ -146,6 +146,10 @@ public class InputHelper {
     }
 
     public java.sql.Date readDate(String label, boolean isRequired) {
+        return readDate(label, isRequired, false);
+    }
+
+    public java.sql.Date readDate(String label, boolean isRequired, boolean checkBirthDate) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("u-M-d").withResolverStyle(ResolverStyle.STRICT);
 
         while (true) {
@@ -167,18 +171,20 @@ public class InputHelper {
                 LocalDate localDate = LocalDate.parse(input, formatter);
                 LocalDate today = LocalDate.now();
 
-                if (localDate.isAfter(today)) {
-                    System.out.println(" ERROR: Date cannot be in the future!");
-                    continue;
+                if (checkBirthDate) {
+                    if (localDate.isAfter(today)) {
+                        System.out.println(" ERROR: Date cannot be in the future!");
+                        continue;
+                    }
+
+                    if (localDate.plusYears(18).isAfter(today)) {
+                        System.out.println(" ERROR: User must be at least 18 years old.");
+                        continue;
+                    }
                 }
 
-                if (localDate.plusYears(18).isAfter(today)) {
-                    System.out.println(" ERROR: User must be at least 18 years old.");
-                    continue;
-                }
-
-                if (localDate.getYear() < 1900) {
-                    System.out.println(" ERROR: Year must be 1900 or later.");
+                if (localDate.getYear() < 1900 || localDate.getYear() > 2100) {
+                    System.out.println(" ERROR: Year must be between 1900 and 2100.");
                     continue;
                 }
                 return java.sql.Date.valueOf(localDate);
@@ -199,7 +205,7 @@ public class InputHelper {
                         "   - At least 1 Digit (0-9)\n" +
                         "   - At least 1 Special Char (@#$%^&+=!)\n" +
                         "   - No spaces allowed.",
-                false
+                false // Zorunlu (Boş geçilemez)
         );
     }
 
@@ -230,17 +236,18 @@ public class InputHelper {
 
             if (input.isEmpty()) {
                 if (!isRequired) return "";
-                System.out.println(" ERROR: This field is required!");
+                System.out.println("ERROR: This field is required!");
                 continue;
             }
 
             if (input.length() > 10) {
-                System.out.println(" ERROR: Input cannot exceed 10 characters!");
+                System.out.println("ERROR: Input cannot exceed 10 characters!");
                 continue;
             }
 
+
             if (!input.matches("^[0-9-]+$")) {
-                System.out.println(" ERROR: Only numbers (0-9) and hyphens (-) are allowed!");
+                System.out.println("ERROR: Only numbers (0-9) and hyphens (-) are allowed!");
                 continue;
             }
 
