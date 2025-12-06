@@ -12,7 +12,7 @@ public class Main {
     public static void main(String[] args) {
 
         //Animation.showStartupAnimation();
-        //LoadingScreen.show();
+        LoadingScreen.show();
 
         Scanner scanner = new Scanner(System.in);
         AuthService authService = new AuthService();
