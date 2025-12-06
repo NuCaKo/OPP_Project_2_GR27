@@ -393,7 +393,7 @@ public class LoadingScreen {
      */
     private static String generateFakeLog() {
         String[] actions = {"Compiling", "Optimizing", "Injecting", "Parsing", "Linking", "Hashing"};
-        String[] targets = {"RabbitAI", "NeuralMesh", "SecureSocket", "DataStream", "LogicCore", "CryptoWallet"};
+        String[] targets = {"RabbitAI", "NeuralMesh", "SecureSocket", "DataStream", "LogicCore", "Blockchain_Sync"};
         return actions[RANDOM.nextInt(actions.length)] + " " + targets[RANDOM.nextInt(targets.length)] + "...";
     }
 
