@@ -5,15 +5,26 @@ import com.group27.model.Contact;
 import com.group27.model.User;
 import java.sql.Date;
 
+/**
+ * Menu for Senior Developer role, providing functionality to add, delete, and restore contacts.
+ */
 public class SeniorMenu extends JuniorMenu {
 
     private SeniorDAO seniorDAO;
 
+    /**
+     * Constructs a SeniorMenu for the given user.
+     *
+     * @param user the currently logged-in user
+     */
     public SeniorMenu(User user) {
         super(user);
         this.seniorDAO = new SeniorDAO();
     }
 
+    /**
+     * Displays the menu and handles user input.
+     */
     @Override
     public void show() {
         boolean running = true;
@@ -58,14 +69,16 @@ public class SeniorMenu extends JuniorMenu {
             else if (choice.equals("0")) {
                 running = false;
             } else {
-                System.out.println("Invalid selection! Please enter 0-9.");
+                System.out.println(MenuFrame.RED + "Invalid selection! Please enter 0-9." + MenuFrame.RESET);
                 try { Thread.sleep(1000); } catch (InterruptedException e) {}
             }
         }
     }
 
 
-
+    /**
+     * Carries out the add contact function.
+     */
     protected void performAdd() {
         System.out.println("\n--- ADD NEW CONTACT ---");
 
@@ -91,11 +104,14 @@ public class SeniorMenu extends JuniorMenu {
         if (seniorDAO.addContact(c)) {
             System.out.println("Success: Contact added!");
         } else {
-            System.out.println("Failure: Could not add contact.");
+            System.out.println(MenuFrame.RED + "Failure: Could not add contact." + MenuFrame.RESET);
         }
     }
 
 
+    /**
+     * Performs the delete contact operation, with an option to undo.
+     */
     protected void performDelete() {
         System.out.println("\n--- DELETE CONTACT ---");
 
@@ -105,7 +121,7 @@ public class SeniorMenu extends JuniorMenu {
 
         Contact c = seniorDAO.getContactById(id);
         if (c == null) {
-            System.out.println("Error: Contact not found.");
+            System.out.println(MenuFrame.RED + "Error: Contact not found." + MenuFrame.RESET);
             return;
         }
 
@@ -118,7 +134,7 @@ public class SeniorMenu extends JuniorMenu {
             if (confirm.equals("y") || confirm.equals("n")) {
                 break;
             }
-            System.out.println("Error: Please enter 'y' or 'n'.");
+            System.out.println(MenuFrame.RED + "Error: Please enter 'y' or 'n'." + MenuFrame.RESET);
         }
 
         if (confirm.equals("y")) {
@@ -133,21 +149,21 @@ public class SeniorMenu extends JuniorMenu {
                     if (undo.equals("y") || undo.equals("n")) {
                         break;
                     }
-                    System.out.println("Error: Please enter 'y' or 'n'.");
+                    System.out.println(MenuFrame.RED + "Error: Please enter 'y' or 'n'." + MenuFrame.RESET);
                 }
 
                 if (undo.equals("y")) {
                     if (seniorDAO.restoreContact(id)) {
                         System.out.println("Success: Contact restored!");
                     } else {
-                        System.out.println("Error: Restore failed.");
+                        System.out.println(MenuFrame.RED + "Error: Restore failed." + MenuFrame.RESET);
                     }
                 } else {
                     System.out.println("Deletion finalized.");
                 }
 
             } else {
-                System.out.println("Failure: Could not delete contact.");
+                System.out.println(MenuFrame.RED + "Failure: Could not delete contact." + MenuFrame.RESET);
             }
         } else {
             System.out.println("Operation cancelled.");

@@ -5,15 +5,26 @@ import com.group27.model.Contact;
 import com.group27.model.User;
 import java.sql.Date;
 
+/**
+ * Menu for Junior Developer role, providing functionality to update contacts.
+ */
 public class JuniorMenu extends TesterMenu {
 
     private JuniorDAO juniorDAO;
 
+    /**
+     * Constructs a JuniorMenu for the given user.
+     *
+     * @param user the currently logged-in user
+     */
     public JuniorMenu(User user) {
         super(user);
         this.juniorDAO = new JuniorDAO();
     }
 
+    /**
+     * Manages user input and shows the menu.
+     */
     @Override
     public void show() {
         boolean running = true;
@@ -44,13 +55,16 @@ public class JuniorMenu extends TesterMenu {
             else if (choice.equals("0")) {
                 running = false;
             } else {
-                System.out.println("Invalid selection! Please enter 0-7.");
+                System.out.println(MenuFrame.RED + "Invalid selection! Please enter 0-7." + MenuFrame.RESET);
                 try { Thread.sleep(1000); } catch (InterruptedException e) {}
             }
         }
     }
 
 
+    /**
+     * Performs the contact update operation.
+     */
     protected void performUpdate() {
         System.out.println("\n--- UPDATE CONTACT ---");
 
@@ -58,7 +72,7 @@ public class JuniorMenu extends TesterMenu {
 
         Contact c = juniorDAO.getContactById(id);
         if (c == null) {
-            System.out.println("Error: Contact with ID " + id + " not found.");
+            System.out.println(MenuFrame.RED + "Error: Contact with ID " + id + " not found." + MenuFrame.RESET);
             return;
         }
 
@@ -103,7 +117,7 @@ public class JuniorMenu extends TesterMenu {
         if (juniorDAO.updateContact(c)) {
             System.out.println("✅ Success: Contact updated successfully!");
         } else {
-            System.out.println("❌ Failure: Update failed.");
+            System.out.println(MenuFrame.RED + "❌ Failure: Update failed." + MenuFrame.RESET);
         }
     }
 }
