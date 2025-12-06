@@ -4,17 +4,28 @@ import com.group27.dao.ContactReaderDAO;
 import com.group27.model.User;
 import com.group27.util.InputHelper;
 
+/**
+ * Menu for the Tester role, providing basic read-only operations and search functionality.
+ */
 public class TesterMenu extends BaseMenu {
 
     protected ContactReaderDAO contactDAO;
     private final InputHelper inputHelper;
 
+    /**
+     * Constructs a TesterMenu for the given user.
+     *
+     * @param user the currently logged-in user
+     */
     public TesterMenu(User user) {
         super(user);
         this.contactDAO = new ContactReaderDAO();
         this.inputHelper = new InputHelper(scanner);
     }
 
+    /**
+     * Displays the menu and handles user input.
+     */
     @Override
     public void show() {
         boolean running = true;
@@ -44,11 +55,16 @@ public class TesterMenu extends BaseMenu {
                 System.out.println("\nPress Enter to continue...");
                 scanner.nextLine();
             } else {
-                System.out.println("Invalid selection!");
+                System.out.println(MenuFrame.RED + "Invalid selection!" + MenuFrame.RESET);
             }
         }
     }
 
+    /**
+     * Handles the common operations available to Testers and higher roles.
+     *
+     * @param choice the user's menu choice
+     */
     protected void handleTesterOperations(String choice) {
         switch (choice) {
             case "1": printContactList(contactDAO.getAllContacts()); break;
@@ -57,10 +73,13 @@ public class TesterMenu extends BaseMenu {
             case "4": performCustomSearch(); break;
             case "5": performSort(); break;
             case "6": changePassword(); break;
-            default: System.out.println("Invalid selection!");
+            default: System.out.println(MenuFrame.RED + "Invalid selection!" + MenuFrame.RESET);
         }
     }
 
+    /**
+     * Performs a single-field search.
+     */
     protected void performSearch() {
         System.out.println("\n--- SINGLE FIELD SEARCH ---");
 
@@ -76,15 +95,15 @@ public class TesterMenu extends BaseMenu {
         switch (choice) {
             case 1:
                 field = "first_name";
-                keyword = input.readName("Enter Name Keyword", true);
+                keyword = input.readName2("Enter Name Keyword", true);
                 break;
             case 2:
                 field = "last_name";
-                keyword = input.readName("Enter Surname Keyword", true);
+                keyword = input.readName2("Enter Surname Keyword", true);
                 break;
             case 3:
                 field = "phone_primary";
-                keyword = input.readPhone("Enter Phone Number", true);
+                keyword = input.readNumeric("Enter Phone Number", true);
                 break;
         }
 
@@ -92,6 +111,9 @@ public class TesterMenu extends BaseMenu {
         printContactList(contactDAO.searchContacts(field, keyword));
     }
 
+    /**
+     * Performs a multi-field search based on scenarios.
+     */
     protected void performMultiSearchMenu() {
         System.out.println("\n--- MULTI-FIELD SEARCH SCENARIOS ---");
         System.out.println("1. Name AND Birth Month (e.g., 'Ahmet' in '11')");
@@ -105,24 +127,24 @@ public class TesterMenu extends BaseMenu {
 
         switch (choice) {
             case 1:
-                name = input.readName("Name", true);
+                name = input.readName2("Name", true);
                 int mInput = input.readInt("Month (1-12)", 1, 12);
                 month = String.valueOf(mInput);
                 break;
 
             case 2:
-                surname = input.readName("Surname", true);
+                surname = input.readName2("Surname", true);
                 int yInput = input.readInt("Year (YYYY)", 1900, 2100);
                 year = String.valueOf(yInput);
                 break;
 
             case 3:
-                name = input.readName("Name", true);
+                name = input.readName2("Name", true);
                 nickname = input.readRequiredString("Nickname");
                 break;
 
             case 4:
-                name = input.readName("Name", true);
+                name = input.readName2("Name", true);
                 linkedin = input.readRequiredString("LinkedIn Keyword");
                 break;
 
@@ -131,6 +153,9 @@ public class TesterMenu extends BaseMenu {
         printContactList(contactDAO.searchComplex(name, surname, null, null, month, year, nickname, linkedin));
     }
 
+    /**
+     * Performs a custom search (e.g., by email domain or age range).
+     */
     protected void performCustomSearch() {
         System.out.println("\n--- CUSTOM SEARCH ---");
         System.out.println("1. Search by Email Domain (e.g. gmail, khas)");
@@ -147,13 +172,16 @@ public class TesterMenu extends BaseMenu {
             int max = input.readInt("Max Age", 18, 100);
 
             if (min > max) {
-                System.out.println("Error: Min age cannot be greater than Max age.");
+                System.out.println(MenuFrame.RED + "Error: Min age cannot be greater than Max age." + MenuFrame.RESET);
             } else {
                 printContactList(contactDAO.searchByAgeRange(min, max));
             }
         }
     }
 
+    /**
+     * Performs a sort operation on contacts.
+     */
     protected void performSort() {
         System.out.println("\n--- SORT CONTACTS ---");
 

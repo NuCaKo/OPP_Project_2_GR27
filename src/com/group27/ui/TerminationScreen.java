@@ -90,18 +90,18 @@ public class TerminationScreen {
     };
 
     private static final String[] GOODBYE_TEXT = {
-            "   ______                   __   __                   ",
-            "  / ____/  ____   ____     / /  / /_   __  __   ___   ",
-            " / / __   / __ \\ / __ \\   / /  / __ \\ / / / /  / _ \\  ",
-            "/ /_/ /  / /_/ // /_/ /  / /  / /_/ // /_/ /  /  __/  ",
-            "\\____/   \\____/ \\____/  /_/  /_.___/ \\__, /   \\___/   ",
-            "                                    /____/            "
+            "  _____  ____   ____  _____  ______     ________ ",
+            " / ____|/ __ \\ / __ \\|  __ \\|  _ \\ \\   / /  ____|",
+            "| |  __| |  | | |  | | |  | | |_) \\ \\_/ /| |__   ",
+            "| | |_ | |  | | |  | | |  | |  _ < \\   / |  __|  ",
+            "| |__| | |__| | |__| | |__| | |_) | | |  | |____ ",
+            " \\_____|\\____/ \\____/|_____/|____/  |_|  |______|"
     };
 
     private static final String[] ATATURK_PORTRAIT = {
-            "⠂⠀⠂⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀",
+            "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀",
             "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣤⣄⣠⣄⣠⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀",
-            "⠀⢀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⣴⣶⣶⣿⣿⣾⣿⣿⣿⣿⣾⣷⣦⣄⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀",
+            "⠀ ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⣴⣶⣶⣿⣿⣾⣿⣿⣿⣿⣾⣷⣦⣄⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀",
             "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⣴⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣦⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀",
             "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⣴⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣶⣦⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀",
             "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡏⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀",
@@ -130,8 +130,7 @@ public class TerminationScreen {
             "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢉⣿⣾⣿⣿⣿⢿⣟⣿⣿⣽⠿⠋⠙⠳⣿⣫⣾⣟⣿⠋⠀⣠⣾⣿⠞⢡⣿⠞⠛⠋⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣽",
             "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠉⠉⠓⠋⣥⣼⠟⠉⠀⠀⢀⠀⠀⠀⣸⡏⢹⡟⢿⠴⠞⠃⠈⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣀⣤⡤⠶⠞⠋⠁",
             "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠸⠟⠃⠀⠀⠀⠀⣾⣃⣠⡶⠟⠁⠀⠀⠀⠀⠀⠀⠀⠀⠠⣾⣖⣞⣧⣤⠤⠶⠶⠶⠚⠛⠛⠉⠉⠉⠀⠀⠀⠀⠀⠀",
-            "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠉⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀",
-            "                                     MUSTAFA KEMAL ATATÜRK                                          "
+            "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠉⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀"
     };
 
     private static final String ATATURK_QUOTE = "Benim naçiz vücudum elbet bir gün toprak olacaktır, ancak Türkiye Cumhuriyeti ilelebet payidar kalacaktır.";
@@ -263,7 +262,7 @@ public class TerminationScreen {
     }
 
     /**
-     * renders a single frame of animation.
+     * Renders a single animation frame.
      *
      * @param sb          the StringBuilder to render to
      * @param frameCount  the current frame count
@@ -375,7 +374,7 @@ public class TerminationScreen {
     }
 
     /**
-     * Adds a line to the StringBuilder while taking the mask height into account.
+     * Appends a line to the StringBuilder, considering the mask height.
      *
      * @param sb          the StringBuilder
      * @param content     the content of the line

@@ -51,6 +51,7 @@ public class ManagerMenu extends SeniorMenu {
             MenuFrame.printMenuItem(4, "List Users");
             MenuFrame.printMenuItem(5, "Contact Statistics");
             MenuFrame.printMenuItem(6, "Change My Password");
+            MenuFrame.printMenuItem(0, "Logout");
 
 
 
