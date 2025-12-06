@@ -6,10 +6,19 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-
+/**
+ * Abstract base class for Data Access Objects (DAOs), providing common helper methods.
+ */
 public abstract class BaseDAO {
 
 
+    /**
+     * Maps a ResultSet to a list of Contact objects.
+     *
+     * @param rs the ResultSet to map
+     * @return a list of Contact objects
+     * @throws SQLException if a database access error occurs
+     */
     protected List<Contact> mapResultSetToContacts(ResultSet rs) throws SQLException {
         List<Contact> contacts = new ArrayList<>();
         while (rs.next()) {
@@ -27,6 +36,12 @@ public abstract class BaseDAO {
         return contacts;
     }
 
+    /**
+     * Checks if the provided column name is valid for sorting or querying.
+     *
+     * @param col the column name to check
+     * @return true if the column is valid, false otherwise
+     */
     protected boolean isValidColumn(String col) {
         if (col == null) return false;
         return col.equals("first_name") || col.equals("last_name") ||

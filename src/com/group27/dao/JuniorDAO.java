@@ -4,17 +4,27 @@ import com.group27.config.DatabaseHelper;
 import com.group27.model.Contact;
 import java.sql.*;
 
+/**
+ * Data Access Object for Junior Developer role, extending ContactReaderDAO.
+ * Provides functionality to update contacts.
+ */
 public class JuniorDAO extends ContactReaderDAO {
 
+    /**
+     * Updates an existing contact in the database.
+     *
+     * @param contact the contact object with updated information
+     * @return true if the update was successful, false otherwise
+     */
     public boolean updateContact(Contact contact) {
 
         if (isDataTaken("email", contact.getEmail(), contact.getContactId())) {
-            System.out.println("ERROR: This Email is already used by another contact!");
+            System.out.println("\u001B[31mERROR: This Email is already used by another contact!\u001B[0m");
             return false;
         }
 
         if (isDataTaken("phone_primary", contact.getPhonePrimary(), contact.getContactId())) {
-            System.out.println("ERROR: This Phone Number is already used by another contact!");
+            System.out.println("\u001B[31mERROR: This Phone Number is already used by another contact!\u001B[0m");
             return false;
         }
 

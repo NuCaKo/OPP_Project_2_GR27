@@ -1,6 +1,9 @@
 package com.group27.ui;
 
 
+/**
+ * Provides utility methods for rendering the menu frame and animations in the console UI.
+ */
 public class MenuFrame {
 
     public static final String RESET = "\u001B[0m";
@@ -21,14 +24,23 @@ public class MenuFrame {
     private static final String T_DOWN = "╦";
     private static final String T_UP = "╩";
 
-    private static final int WIDTH = 60; // Standard width for menus
+    private static final int WIDTH = 60;
 
+    /**
+     * Clears the console screen.
+     */
     public static void clearScreen() {
 
         System.out.print("\033[H\033[2J");
         System.out.flush();
     }
 
+    /**
+     * Prints the header of the menu with the given title and optional subtitle.
+     *
+     * @param title    the main title of the menu
+     * @param subtitle the subtitle of the menu
+     */
     public static void printHeader(String title, String subtitle) {
         clearScreen();
         printSeparator(TOP_LEFT, TOP_RIGHT);
@@ -45,6 +57,12 @@ public class MenuFrame {
         printSeparator("╠", "╣");
     }
 
+    /**
+     * Prints a menu item with the given index and label.
+     *
+     * @param index the index of the menu item
+     * @param label the label of the menu item
+     */
     public static void printMenuItem(int index, String label) {
         String itemText = String.format(" %d. %-50s", index, label);
         if (itemText.length() > WIDTH - 2) {
@@ -55,6 +73,11 @@ public class MenuFrame {
         System.out.println(RED + VERTICAL + RESET + WHITE + itemText + RED + VERTICAL + RESET);
     }
 
+    /**
+     * Prints a line of text within the menu frame.
+     *
+     * @param text the text to print
+     */
     public static void printMenuLine(String text) {
         String line = String.format(" %-54s", text);
         if (line.length() > WIDTH - 2) {
@@ -65,12 +88,18 @@ public class MenuFrame {
         System.out.println(RED + VERTICAL + RESET + YELLOW + line + RED + VERTICAL + RESET);
     }
 
+    /**
+     * Prints the footer of the menu.
+     */
     public static void printFooter() {
         printMenuItem(0, "Logout / Back");
         printSeparator(BOTTOM_LEFT, BOTTOM_RIGHT);
         System.out.print(YELLOW_BOLD + ">> Select Option: " + RESET);
     }
 
+    /**
+     * Displays a startup animation.
+     */
     public static void animateMenu() {
         clearScreen();
 
@@ -83,7 +112,7 @@ public class MenuFrame {
                     System.out.print((Math.random() > 0.5 ? "1" : "0") + "x" + (int)(Math.random()*9) + "F ");
                 }
                 System.out.println(" [OK]");
-                Thread.sleep(50); // Hızlı akış
+                Thread.sleep(50);
             }
         } catch (InterruptedException e) {}
 
@@ -102,6 +131,12 @@ public class MenuFrame {
         drawBoxAnimation();
     }
 
+    /**
+     * Prints a horizontal separator line with the specified left and right characters.
+     *
+     * @param left  the character for the left end of the separator
+     * @param right the character for the right end of the separator
+     */
     private static void printSeparator(String left, String right) {
         System.out.print(RED_BOLD + left);
         for (int i = 0; i < WIDTH - 2; i++) {
@@ -110,6 +145,13 @@ public class MenuFrame {
         System.out.println(right + RESET);
     }
 
+    /**
+     * Centers the given text within a specified width.
+     *
+     * @param text  the text to center
+     * @param width the width to center within
+     * @return the centered text string
+     */
     private static String centerText(String text, int width) {
 
         String cleanText = text.replaceAll("\\u001B\\[[;\\d]*m", "");
@@ -131,6 +173,9 @@ public class MenuFrame {
         return sb.toString();
     }
 
+    /**
+     * Draws a box animation around the title.
+     */
     private static void drawBoxAnimation() {
         try {
 
@@ -151,7 +196,7 @@ public class MenuFrame {
             System.out.print(WHITE_BOLD);
             for (char c : title.toCharArray()) {
                 System.out.print(c);
-                Thread.sleep(30); // Daktilo hızı
+                Thread.sleep(30);
             }
             System.out.print(RED_BOLD);
 

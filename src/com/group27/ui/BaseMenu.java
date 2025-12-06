@@ -9,6 +9,9 @@ import com.group27.util.PasswordUtil;
 import java.util.List;
 import java.util.Scanner;
 
+/**
+ * Abstract base class for all menus, providing common functionality.
+ */
 public abstract class BaseMenu implements Menu {
 
     protected User user;
@@ -16,6 +19,11 @@ public abstract class BaseMenu implements Menu {
     protected UserDAO userDAO;
     protected InputHelper input;
 
+    /**
+     * Constructs a BaseMenu for the given user.
+     *
+     * @param user the currently logged-in user
+     */
     public BaseMenu(User user) {
         this.user = user;
         this.scanner = new Scanner(System.in);
@@ -25,13 +33,16 @@ public abstract class BaseMenu implements Menu {
     }
 
 
+    /**
+     * Handles the change password workflow for the user.
+     */
     protected void changePassword() {
         System.out.println("\n--- CHANGE PASSWORD ---");
         String oldPass = input.readRequiredString("Current Password");
         String oldHash = PasswordUtil.hashPassword(oldPass);
 
         if (!user.getPasswordHash().equals(oldHash)) {
-            System.out.println("Error: Incorrect current password!");
+            System.out.println(MenuFrame.RED + "Error: Incorrect current password!" + MenuFrame.RESET);
             return;
         }
 
@@ -42,23 +53,39 @@ public abstract class BaseMenu implements Menu {
             System.out.println("Password updated successfully!");
             user.setPasswordHash(newHash);
         } else {
-            System.out.println("Database Error!");
+            System.out.println(MenuFrame.RED + "Database Error!" + MenuFrame.RESET);
         }
     }
 
+    /**
+     * Prints the menu header with the given title.
+     *
+     * @param title the title of the menu
+     */
     protected void printHeader(String title) {
         MenuFrame.printHeader(title + " PANEL",
                 "User: " + user.getFullName() + " [" + user.getRole() + "]");
     }
 
+    /**
+     * Prints the standard menu footer.
+     */
     protected void printFooter() {
         MenuFrame.printFooter();
     }
 
+    /**
+     * Clears the console screen.
+     */
     protected void clearScreen() {
         MenuFrame.clearScreen();
     }
 
+    /**
+     * Prints a formatted list of contacts to the console.
+     *
+     * @param list the list of contacts to display
+     */
     protected void printContactList(List<Contact> list) {
         if (list == null || list.isEmpty()) {
             System.out.println("📭 No records found.");

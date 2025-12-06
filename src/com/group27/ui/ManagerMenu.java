@@ -66,7 +66,7 @@ public class ManagerMenu extends SeniorMenu {
                 case "5" -> { showStatisticsFlow(); pause(); }
                 case "6" -> { changePassword(); pause(); }
                 case "0" -> { return; }
-                default -> System.out.println("Wrong Choice! Please try again.");
+                default -> System.out.println(MenuFrame.RED + "Wrong Choice! Please try again." + MenuFrame.RESET);
             }
         }
     }
@@ -81,7 +81,7 @@ public class ManagerMenu extends SeniorMenu {
         Map<String, String> stats = managerDAO.getContactStatistics();
 
         if (stats.containsKey("Error")) {
-            System.out.println("Error fetching statistics: " + stats.get("Error"));
+            System.out.println(MenuFrame.RED + "Error fetching statistics: " + stats.get("Error") + MenuFrame.RESET);
             return;
         }
 
@@ -108,7 +108,7 @@ public class ManagerMenu extends SeniorMenu {
         String username = input.readNickname("Username", true);
 
         if (managerDAO.getUserByUsername(username) != null) {
-            System.out.println("Error: This username is already taken!");
+            System.out.println(MenuFrame.RED + "Error: This username is already taken!" + MenuFrame.RESET);
             return;
         }
 
@@ -130,17 +130,16 @@ public class ManagerMenu extends SeniorMenu {
         if (managerDAO.addUser(u)) {
             System.out.println("User added successfully.");
         } else {
-            System.out.println("Error: Failed to add user.");
+            System.out.println(MenuFrame.RED + "Error: Failed to add user." + MenuFrame.RESET);
             return;
         }
 
-        // 4. Undo Operation
         if (askYesNo("\nDo you want to undo this operation? (The user will be deleted)")) {
             User addedUser = managerDAO.getUserByUsername(username);
             if (addedUser != null && managerDAO.deleteUser(addedUser.getUserId())) {
                 System.out.println("Operation undone: User deleted.");
             } else {
-                System.out.println("Error: Could not undo.");
+                System.out.println(MenuFrame.RED + "Error: Could not undo." + MenuFrame.RESET);
             }
         }
     }
@@ -158,37 +157,32 @@ public class ManagerMenu extends SeniorMenu {
     private void deleteUserFlow() {
         System.out.println("\n--- DELETE USER ---");
 
-        // 1. Get ID using InputHelper
         int id = input.readValidInt("User ID to be deleted: ");
 
-        // 2. Check User
         User oldUser = managerDAO.getUserById(id);
         if (oldUser == null) {
-            System.out.println("No user was found with this ID.");
+            System.out.println(MenuFrame.RED + "No user was found with this ID." + MenuFrame.RESET);
             return;
         }
 
-        // 3. Confirm Deletion
         System.out.println("Deleting: " + oldUser.getUsername() + " (" + oldUser.getFullName() + ")");
         if (!askYesNo("Are you sure you want to delete this user?")) {
             System.out.println("Deletion cancelled.");
             return;
         }
 
-        // 4. Perform Delete
         if (managerDAO.deleteUser(id)) {
             System.out.println("User deleted successfully.");
         } else {
-            System.out.println("User can't be deleted.");
+            System.out.println(MenuFrame.RED + "User can't be deleted." + MenuFrame.RESET);
             return;
         }
 
-        // 5. Undo Operation (Add User Back)
         if (askYesNo("Do you want to undo the operation? (Restore user)")) {
             if (managerDAO.addUser(oldUser)) {
                 System.out.println("✅ Operation undone: User restored.");
             } else {
-                System.out.println("Undo operation failed.");
+                System.out.println(MenuFrame.RED + "Undo operation failed." + MenuFrame.RESET);
             }
         }
     }
@@ -203,18 +197,16 @@ public class ManagerMenu extends SeniorMenu {
     private void updateUserFlow() {
         System.out.println("\n--- UPDATE USER ---");
 
-        // 1. Get ID
         int id = input.readValidInt("User ID to be updated: ");
 
         User oldUser = managerDAO.getUserById(id);
         if (oldUser == null) {
-            System.out.println("There is no user with this ID.");
+            System.out.println(MenuFrame.RED + "There is no user with this ID." + MenuFrame.RESET);
             return;
         }
 
         System.out.println("Updating user: " + oldUser.getUsername());
 
-        // 2. Get New Data (using InputHelper)
         String username = input.readNickname("New Username", true);
         String first = input.readName("New First Name", true);
         String last = input.readName("New Last Name", true);
@@ -222,30 +214,26 @@ public class ManagerMenu extends SeniorMenu {
         System.out.println("--- Select New Role ---");
         Role role = getRoleSelection();
 
-        // 3. Prepare Update Object
         User newUser = new User();
         newUser.setUserId(id);
         newUser.setUsername(username);
         newUser.setFirstName(first);
         newUser.setLastName(last);
         newUser.setRole(role);
-        // Keep the old password hash so they can still login
         newUser.setPasswordHash(oldUser.getPasswordHash());
 
-        // 4. Update
         if (managerDAO.updateUser(newUser)) {
             System.out.println("User updated successfully.");
         } else {
-            System.out.println("User can't be updated.");
+            System.out.println(MenuFrame.RED + "User can't be updated." + MenuFrame.RESET);
             return;
         }
 
-        // 5. Undo Operation (Revert to oldUser data)
         if (askYesNo("Do you want to undo the operation? (Revert changes)")) {
             if (managerDAO.updateUser(oldUser)) {
                 System.out.println("Operation undone: Previous information restored.");
             } else {
-                System.out.println("Undo operation failed.");
+                System.out.println(MenuFrame.RED + "Undo operation failed." + MenuFrame.RESET);
             }
         }
     }
@@ -272,7 +260,6 @@ public class ManagerMenu extends SeniorMenu {
         System.out.println("-------------------------------------------------------------\n");
     }
 
-    // --- HELPER METHODS ---
 
     /**
      * Prompts the user to select a role from a predefined list.
@@ -294,7 +281,7 @@ public class ManagerMenu extends SeniorMenu {
                 case "2" -> { return Role.JUNIOR_DEV; }
                 case "3" -> { return Role.SENIOR_DEV; }
                 case "4" -> { return Role.MANAGER; }
-                default -> System.out.println("⚠️ Invalid selection! Please enter 1-4.");
+                default -> System.out.println(MenuFrame.RED + "⚠️ Invalid selection! Please enter 1-4." + MenuFrame.RESET);
             }
         }
     }

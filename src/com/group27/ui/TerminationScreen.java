@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * Handles the display of the termination screen animation.
+ */
 public class TerminationScreen {
 
     private static final String RESET = "\033[0m";
@@ -95,7 +98,6 @@ public class TerminationScreen {
             "                                    /____/            "
     };
 
-    // Düzeltilmiş: Her satır dizinin ayrı bir elemanı yapıldı
     private static final String[] ATATURK_PORTRAIT = {
             "⠂⠀⠂⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀",
             "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣤⣄⣠⣄⣠⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀",
@@ -143,10 +145,13 @@ public class TerminationScreen {
     private static boolean[] activeColumn;
     private static boolean[][] rainState;
     private static boolean rainInitialized = false;
-    private static boolean stopRain = false; // Flag to stop generating new drops
+    private static boolean stopRain = false;
 
+    /**
+     * Displays the termination animation and tribute.
+     */
     public static void show() {
-        int durationFrames = 90; // Approx 6 seconds
+        int durationFrames = 90;
         int frameCount = 0;
         int rabbitWidth = RABBIT_FRAME1[0].length();
 
@@ -186,7 +191,7 @@ public class TerminationScreen {
                 updateRain();
                 StringBuilder sb = new StringBuilder();
                 sb.append("\033[H");
-                renderFrame(sb, frameCount + i, WIDTH + 20, 1.0); // Rabbit gone
+                renderFrame(sb, frameCount + i, WIDTH + 20, 1.0);
                 System.out.print(sb.toString());
                 System.out.flush();
                 Thread.sleep(FRAME_DELAY);
@@ -206,41 +211,38 @@ public class TerminationScreen {
             System.out.print("\033[H\033[2J");
             System.out.flush();
 
-            // Tribute Animation
             showAtaturkTribute();
 
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
         } finally {
-            System.out.print("\033[?25h"); // Show cursor
+            System.out.print("\033[?25h");
         }
     }
 
+    /**
+     * Shows a tribute animation.
+     *
+     * @throws InterruptedException if the thread is interrupted
+     */
     private static void showAtaturkTribute() throws InterruptedException {
-        // Ekranı temizle
         System.out.print("\033[H\033[2J");
 
-        // Portreyi dikeyde ortala (Negatif olmaması için Math.max kullanıldı)
         int startRow = Math.max(1, (HEIGHT - ATATURK_PORTRAIT.length) / 2 - 3);
 
         System.out.print(WHITE_BOLD);
 
-        // 1. Portreyi Satır Satır Çiz
         for (int i = 0; i < ATATURK_PORTRAIT.length; i++) {
             String line = ATATURK_PORTRAIT[i];
-            // Satırı yatayda ortala
             int paddingLeft = Math.max(1, (WIDTH - line.length()) / 2);
 
-            // İmleci konumlandır ve satırı bas
             System.out.printf("\033[%d;%dH", startRow + i, paddingLeft);
             System.out.print(line);
             System.out.flush();
 
-            // Çizim hızı (Satır satır efekt için)
             Thread.sleep(50);
         }
 
-        // 2. Sözü Yaz (Portrenin bittiği yerin 2 satır altına)
         String quote = ATATURK_QUOTE;
         int quoteRow = startRow + ATATURK_PORTRAIT.length + 2;
         int quotePadding = Math.max(1, (WIDTH - quote.length()) / 2);
@@ -248,7 +250,6 @@ public class TerminationScreen {
         System.out.printf("\033[%d;%dH", quoteRow, quotePadding);
         System.out.print(WHITE_BOLD + BOLD);
 
-        // Daktilo Efekti
         for (char c : quote.toCharArray()) {
             System.out.print(c);
             System.out.flush();
@@ -257,15 +258,32 @@ public class TerminationScreen {
 
         System.out.print(RESET);
 
-        // Bekle ve bitir
         Thread.sleep(5000);
         System.out.println();
     }
 
+    /**
+     * Renders a single animation frame.
+     *
+     * @param sb          the StringBuilder to render to
+     * @param frameCount  the current frame count
+     * @param rabbitLeft  the rabbit's left position
+     * @param progress    the current progress
+     */
     private static void renderFrame(StringBuilder sb, int frameCount, int rabbitLeft, double progress) {
         renderFrameContent(sb, frameCount, rabbitLeft, progress, -1, false);
     }
 
+    /**
+     * Renders the content of a frame.
+     *
+     * @param sb          the StringBuilder to render to
+     * @param frameCount  the current frame count
+     * @param rabbitLeft  the rabbit's left position
+     * @param progress    the current progress
+     * @param maskHeight  the mask height for closing animation
+     * @param isFinal     whether this is the final frame
+     */
     private static void renderFrameContent(StringBuilder sb, int frameCount, int rabbitLeft, double progress, int maskHeight, boolean isFinal) {
         int currentLine = 0;
         int rabbitWidth = RABBIT_FRAME1[0].length();
@@ -280,10 +298,8 @@ public class TerminationScreen {
 
         appendLine(sb, borderColor + "╠" + "═".repeat(WIDTH - 2) + "╣" + RESET, currentLine++, maskHeight);
 
-        // Render Rain/Rabbit/Goodbye Area
         String[] currentRabbit = ((frameCount / 3) % 2 == 0) ? RABBIT_FRAME1 : RABBIT_FRAME2;
 
-        // Center "GOODBYE" vertically
         int goodbyeTop = (RAIN_AREA_HEIGHT - GOODBYE_TEXT.length) / 2;
 
         for (int r = 0; r < RAIN_AREA_HEIGHT; r++) {
@@ -294,8 +310,6 @@ public class TerminationScreen {
                 char outChar = ' ';
                 String color = RESET;
 
-                // 1. Goodbye Text (Highest Priority, appears at end)
-                // Appears when stopRain is true (approx last 40%)
                 boolean inGoodbye = false;
                 if (stopRain && r >= goodbyeTop && r < goodbyeTop + GOODBYE_TEXT.length) {
                     int textRow = r - goodbyeTop;
@@ -314,7 +328,6 @@ public class TerminationScreen {
                 }
 
                 if (!inGoodbye) {
-                    // 2. Rabbit
                     int rabbitTop = (RAIN_AREA_HEIGHT - 30) / 2;
                     int rr = r - rabbitTop;
                     int rc = c - rabbitLeft;
@@ -330,17 +343,14 @@ public class TerminationScreen {
 
                     if (insideRabbit) {
                         outChar = rabbitCh;
-                        // Rabbit Red/Yellow Stripe
                         if ((rc + frameCount) % 6 < 3) color = RED;
                         else color = YELLOW;
                     } else {
-                        // 3. Rain
                         if (c < RAIN_AREA_WIDTH && r < RAIN_AREA_HEIGHT &&
                                 activeColumn != null && activeColumn[c] &&
                                 rainState != null && rainState[r][c]) {
 
                             outChar = MATRIX_CHARS.charAt(RANDOM.nextInt(MATRIX_CHARS.length()));
-                            // Fire Rain
                             boolean isHead = false;
                             if (r < RAIN_AREA_HEIGHT - 1) {
                                 if (!rainState[r + 1][c]) isHead = true;
@@ -361,10 +371,17 @@ public class TerminationScreen {
             appendLine(sb, lineSb.toString(), currentLine++, maskHeight);
         }
 
-        // Bottom Border
         appendLine(sb, borderColor + "╚" + "═".repeat(WIDTH - 2) + "╝" + RESET, currentLine++, maskHeight);
     }
 
+    /**
+     * Appends a line to the StringBuilder, considering the mask height.
+     *
+     * @param sb          the StringBuilder
+     * @param content     the content of the line
+     * @param lineIndex   the index of the line
+     * @param maskHeight  the height of the mask
+     */
     private static void appendLine(StringBuilder sb, String content, int lineIndex, int maskHeight) {
         int totalHeight = 42;
         boolean isMasked = false;
@@ -381,8 +398,14 @@ public class TerminationScreen {
         }
     }
 
+    /**
+     * Centers text within the specified width.
+     *
+     * @param text  the text to center
+     * @param width the width to center in
+     * @return the centered text string
+     */
     private static String centerText(String text, int width) {
-        // Strip ANSI for length calculation (simplified, assuming simple codes)
         String stripped = text.replaceAll("\033\\[[;\\d]*m", "");
         int padding = (width - stripped.length()) / 2;
         StringBuilder sb = new StringBuilder();
@@ -392,6 +415,9 @@ public class TerminationScreen {
         return sb.toString();
     }
 
+    /**
+     * Initializes the rain animation.
+     */
     private static void initRain() {
         activeColumn = new boolean[RAIN_AREA_WIDTH];
         rainState = new boolean[RAIN_AREA_HEIGHT][RAIN_AREA_WIDTH];
@@ -410,10 +436,13 @@ public class TerminationScreen {
         rainInitialized = true;
     }
 
+    /**
+     * Updates the rain animation.
+     */
     private static void updateRain() {
         if (!rainInitialized) initRain();
-        double dieProb = stopRain ? 0.30 : 0.10; // Faster death when stopping
-        double birthProb = stopRain ? 0.00 : 0.12; // No birth when stopping
+        double dieProb = stopRain ? 0.30 : 0.10;
+        double birthProb = stopRain ? 0.00 : 0.12;
 
         for (int c = 0; c < RAIN_AREA_WIDTH; c++) {
             if (!activeColumn[c]) continue;

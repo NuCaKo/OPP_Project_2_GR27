@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * Handles the display of the loading screen animation.
+ */
 public class LoadingScreen {
 
     private static final String RESET = "\033[0m";
@@ -103,11 +106,14 @@ public class LoadingScreen {
     private static boolean[][] rainState;
     private static boolean rainInitialized = false;
 
+    /**
+     * Displays the loading animation.
+     */
     public static void show() {
         long startTime = System.currentTimeMillis();
         long endTime = startTime + DURATION_MS;
 
-        rainInitialized = false; // Reset rain
+        rainInitialized = false;
         List<String> logs = new ArrayList<>();
         logs.add(getTimeStamp(startTime) + " System Boot Initiated...");
         logs.add(getTimeStamp(startTime) + " Loading User Interface...");
@@ -169,6 +175,16 @@ public class LoadingScreen {
         }
     }
 
+    /**
+     * Renders the content of a single frame.
+     *
+     * @param sb          the StringBuilder to append the frame content to
+     * @param frameCount  the current frame count
+     * @param rabbitLeft  the left position of the rabbit animation
+     * @param logs        the list of logs to display
+     * @param progress    the current progress (0.0 to 1.0)
+     * @param maskHeight  the height of the mask for the closing animation
+     */
     private static void renderFrameContent(StringBuilder sb, int frameCount, int rabbitLeft, List<String> logs, double progress, int maskHeight) {
         int currentLine = 0;
         int rabbitWidth = RABBIT_FRAME1[0].length();
@@ -233,10 +249,9 @@ public class LoadingScreen {
                             isHead = true;
                         }
 
-                        // Fire Rain: White/Yellow head, Red body
-                        if (isHead) color = WHITE_BOLD; // Hot core
-                        else if (RANDOM.nextInt(10) > 8) color = YELLOW_BOLD; // Spark
-                        else color = RED; // Cooling magma
+                        if (isHead) color = WHITE_BOLD;
+                        else if (RANDOM.nextInt(10) > 8) color = YELLOW_BOLD;
+                        else color = RED;
                     }
                 }
 
@@ -283,6 +298,14 @@ public class LoadingScreen {
         appendLine(sb, borderColor + "╚" + "═".repeat(WIDTH - 2) + "╝" + RESET, currentLine++, maskHeight);
     }
 
+    /**
+     * Appends a line to the string builder with optional masking.
+     *
+     * @param sb        the StringBuilder
+     * @param content   the content of the line
+     * @param lineIndex the index of the line
+     * @param maskHeight the height of the mask
+     */
     private static void appendLine(StringBuilder sb, String content, int lineIndex, int maskHeight) {
         int totalHeight = 42;
         boolean isMasked = false;
@@ -299,6 +322,9 @@ public class LoadingScreen {
         }
     }
 
+    /**
+     * Initializes the rain animation state.
+     */
     private static void initRain() {
         activeColumn = new boolean[RAIN_AREA_WIDTH];
         rainState = new boolean[RAIN_AREA_HEIGHT][RAIN_AREA_WIDTH];
@@ -317,6 +343,9 @@ public class LoadingScreen {
         rainInitialized = true;
     }
 
+    /**
+     * Updates the rain animation state.
+     */
     private static void updateRain() {
         if (!rainInitialized) initRain();
         double dieProb = 0.10;
@@ -341,6 +370,13 @@ public class LoadingScreen {
         }
     }
 
+    /**
+     * Centers text within a given width.
+     *
+     * @param text  the text to center
+     * @param width the width to center within
+     * @return the centered text string
+     */
     private static String centerText(String text, int width) {
         int padding = (width - text.length()) / 2;
         StringBuilder sb = new StringBuilder();
@@ -350,12 +386,23 @@ public class LoadingScreen {
         return sb.toString();
     }
 
+    /**
+     * Generates a fake log message.
+     *
+     * @return a fake log message string
+     */
     private static String generateFakeLog() {
         String[] actions = {"Compiling", "Optimizing", "Injecting", "Parsing", "Linking", "Hashing"};
         String[] targets = {"RabbitAI", "NeuralMesh", "SecureSocket", "DataStream", "LogicCore", "CryptoWallet"};
         return actions[RANDOM.nextInt(actions.length)] + " " + targets[RANDOM.nextInt(targets.length)] + "...";
     }
 
+    /**
+     * Generates a timestamp string based on elapsed time.
+     *
+     * @param start the start time in milliseconds
+     * @return the formatted timestamp
+     */
     private static String getTimeStamp(long start) {
         long diff = System.currentTimeMillis() - start;
         long sec = diff / 1000;

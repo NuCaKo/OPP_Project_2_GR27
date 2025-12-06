@@ -9,9 +9,18 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/**
+ * Data Access Object for User-related database operations.
+ */
 public class UserDAO {
 
 
+    /**
+     * Finds a user by their username.
+     *
+     * @param username the username to search for
+     * @return the User object if found, null otherwise
+     */
     public User findByUsername(String username) {
         String sql = "SELECT * FROM users WHERE username = ?";
 
@@ -34,7 +43,7 @@ public class UserDAO {
                 try {
                     user.setRole(Role.valueOf(rs.getString("role")));
                 } catch (IllegalArgumentException e) {
-                    System.err.println("Hata: Tanımsız rol -> " + rs.getString("role"));
+                    System.err.println("\u001B[31mHata: Tanımsız rol -> " + rs.getString("role") + "\u001B[0m");
                 }
 
                 return user;
@@ -45,6 +54,13 @@ public class UserDAO {
         return null;
     }
 
+    /**
+     * Updates the password for a user.
+     *
+     * @param userId          the ID of the user
+     * @param newPasswordHash the new hashed password
+     * @return true if the update was successful, false otherwise
+     */
     public boolean updatePassword(int userId, String newPasswordHash) {
         String sql = "UPDATE users SET password_hash = ? WHERE user_id = ?";
         try (Connection conn = DatabaseHelper.getConnection();

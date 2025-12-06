@@ -6,9 +6,17 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Data Access Object for reading Contact data from the database.
+ */
 public class ContactReaderDAO extends BaseDAO {
 
 
+    /**
+     * Retrieves all non-deleted contacts from the database.
+     *
+     * @return a list of all contacts
+     */
     public List<Contact> getAllContacts() {
 
         String sql = "SELECT * FROM contacts WHERE is_deleted = 0";
@@ -22,6 +30,13 @@ public class ContactReaderDAO extends BaseDAO {
     }
 
 
+    /**
+     * Searches for contacts where the specified field matches the keyword.
+     *
+     * @param fieldName the database column name to search
+     * @param keyword   the keyword to search for
+     * @return a list of matching contacts
+     */
     public List<Contact> searchContacts(String fieldName, String keyword) {
         if (!isValidColumn(fieldName)) return new ArrayList<>();
 
@@ -45,6 +60,19 @@ public class ContactReaderDAO extends BaseDAO {
     }
 
 
+    /**
+     * Performs a complex search with multiple optional criteria.
+     *
+     * @param firstName       the first name to filter by
+     * @param lastName        the last name to filter by
+     * @param phone           the phone number to filter by
+     * @param email           the email to filter by
+     * @param birthMonth      the birth month to filter by
+     * @param birthYear       the birth year to filter by
+     * @param nickname        the nickname to filter by
+     * @param linkedinKeyword the LinkedIn keyword to filter by
+     * @return a list of matching contacts
+     */
     public List<Contact> searchComplex(String firstName, String lastName, String phone, String email,
                                        String birthMonth, String birthYear, String nickname, String linkedinKeyword) {
 
@@ -75,6 +103,13 @@ public class ContactReaderDAO extends BaseDAO {
     }
 
 
+    /**
+     * Retrieves contacts sorted by a specific field.
+     *
+     * @param orderByField the field to sort by
+     * @param isAscending  true for ascending order, false for descending
+     * @return a list of sorted contacts
+     */
     public List<Contact> getContactsSorted(String orderByField, boolean isAscending) {
         if (!isValidColumn(orderByField)) return new ArrayList<>();
         String direction = isAscending ? "ASC" : "DESC";
@@ -92,6 +127,12 @@ public class ContactReaderDAO extends BaseDAO {
     }
 
 
+    /**
+     * Searches for contacts with an email address containing the specified domain.
+     *
+     * @param domain the email domain to search for
+     * @return a list of matching contacts
+     */
     public List<Contact> searchByEmailDomain(String domain) {
 
         String sql = "SELECT * FROM contacts WHERE is_deleted = 0 AND email LIKE ?";
@@ -102,6 +143,13 @@ public class ContactReaderDAO extends BaseDAO {
     }
 
 
+    /**
+     * Searches for contacts within a specific age range.
+     *
+     * @param min the minimum age
+     * @param max the maximum age
+     * @return a list of matching contacts
+     */
     public List<Contact> searchByAgeRange(int min, int max) {
 
         String sql = "SELECT * FROM contacts WHERE is_deleted = 0 AND TIMESTAMPDIFF(YEAR, birth_date, CURDATE()) BETWEEN ? AND ?";
@@ -112,6 +160,12 @@ public class ContactReaderDAO extends BaseDAO {
     }
 
 
+    /**
+     * Retrieves a contact by its unique ID.
+     *
+     * @param id the ID of the contact
+     * @return the Contact object if found, null otherwise
+     */
     public Contact getContactById(int id) {
 
         String sql = "SELECT * FROM contacts WHERE contact_id = ? AND is_deleted = 0";
@@ -129,12 +183,20 @@ public class ContactReaderDAO extends BaseDAO {
             }
 
         } catch (SQLException e) {
-            System.out.println("❌ Error fetching contact by ID: " + e.getMessage());
+            System.out.println("\u001B[31m❌ Error fetching contact by ID: " + e.getMessage() + "\u001B[0m");
         }
         return null;
     }
 
 
+    /**
+     * Checks if a specific data value is already taken by another contact.
+     *
+     * @param columnName the column name to check
+     * @param value      the value to check
+     * @param excludeId  the contact ID to exclude from the check
+     * @return true if the data is taken, false otherwise
+     */
     public boolean isDataTaken(String columnName, String value, int excludeId) {
         String sql = "SELECT COUNT(*) FROM contacts WHERE " + columnName + " = ? AND contact_id != ? AND is_deleted = 0";
 
@@ -146,7 +208,7 @@ public class ContactReaderDAO extends BaseDAO {
 
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
-                return rs.getInt(1) > 0; // Eğer 0'dan büyükse, kayıt var demektir.
+                return rs.getInt(1) > 0;
             }
         } catch (SQLException e) {
             e.printStackTrace();
